@@ -4,6 +4,7 @@
 
 ZOO_HOME=${ZOO_HOME:-/opt/zookeeper}
 ZOO_CONF_DIR=$ZOO_HOME/conf
+ZOO_VERSION=${ZOO_VERSION:-"3.4.9"}
 
 . ${ZOO_HOME}/common_functions.sh
 
@@ -38,18 +39,18 @@ if [ $ZOO_REPLICAS -gt 1 ];then
   fi
 fi
 
-export ZK_dataDir=${ZK_dataDir:-$ZOO_HOME/zookeeper/data}
-export ZK_dataLogDir=${ZK_dataLogDir:-$ZOO_HOME/zookeeper/data-log}
+export ZK_dataDir=${ZK_dataDir:-$ZOO_HOME/data}
+export ZK_dataLogDir=${ZK_dataLogDir:-$ZOO_HOME/data-log}
 mkdir -p ${ZK_dataDir} ${ZK_dataLogDir}
 
 export ZK_clientPort=${ZK_clientPort:-2181}
 
 # Remove invalid options per version
-if ! version_gt $VERSION "3.4.5"; then
+if ! version_gt $ZOO_VERSION "3.4.5"; then
   unset ZK_maxClientCnxns
 fi
 
-if ! version_gt $VERSION "3.3.6"; then
+if ! version_gt $ZOO_VERSION "3.3.6"; then
   unset ZK_autopurge_snapRetainCount
   unset ZK_autopurge_purgeInterval
 fi
