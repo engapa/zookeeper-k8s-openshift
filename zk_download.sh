@@ -2,14 +2,11 @@
 
 function download_zoo_release () {
 
-  ZOO_VERSION=${1:-${ZOO_VERSION}}
-  ZOO_HOME=${2:-${ZOO_HOME}}
-
-  if [[ -z $KAFKA_VERSION || -z $KAFKA_HOME ]]; then
+  if [[ -z $ZOO_VERSION || -z $ZOO_HOME ]]; then
     echo 'ZOO_VERSION and ZOO_HOME are required values.' && exit 1;
   fi
 
-  URL_PREFIX="https://dist.apache.org/repos/dist/release/zookeeper/${ZOO_VERSION}/zookeeper-${ZOO_VERSION}"
+  URL_PREFIX="https://dist.apache.org/repos/dist/release/zookeeper/zookeeper-${ZOO_VERSION}/zookeeper-${ZOO_VERSION}"
 
   wget -q -O /tmp/zookeeper.tar.gz "${URL_PREFIX}.tar.gz"
   wget -q -O /tmp/zookeeper.tar.gz.asc "${URL_PREFIX}.tar.gz.asc"
@@ -30,13 +27,10 @@ function download_zoo_release () {
          $ZOO_HOME/docs \
          $ZOO_HOME/bin/{*.cmd,README.txt} \
          $ZOO_HOME/*.{asc,md5,sha1}
-
 }
 
 function download_utils() {
-
-  wget -q -O ${ZOO_HOME}/bin/kafka_common_functions.sh https://raw.githubusercontent.com/engapa/utils-docker/master/common-functions.sh
-
+  wget -q -O $ZOO_HOME/common_functions.sh https://raw.githubusercontent.com/engapa/utils-docker/master/common-functions.sh
 }
 
-download_utils && download_zoo_release "$@"
+download_utils && download_zoo_release
