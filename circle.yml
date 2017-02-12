@@ -2,21 +2,21 @@ machine:
   services:
     - docker
   environment:
-    ZK_VERSION: 3.4.9
+    ZOO_VERSION: 3.4.9
 
 dependencies:
   override:
     - docker info
-    - docker build --rm=false -t engapa/zookeeper:$ZK_VERSION .
+    - docker build --rm=false -t engapa/zookeeper:$ZOO_VERSION .
 
 test:
   override:
-    - docker run -it --name zk -d engapa/zookeeper:$ZK_VERSION
-    - if [ $(docker inspect -f {{.State.Running}} kafka) == 'true' ]; then exit 0; else exit 1; fi
+    - docker run -it --name zk -d engapa/zookeeper:$ZOO_VERSION
+    - if [ $(docker inspect -f {{.State.Running}} zk) == 'true' ]; then exit 0; else exit 1; fi
 
 deployment:
   hub:
     branch: master
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push engapa/zookeeper:$ZK_VERSION
+      - docker push engapa/zookeeper:$ZOO_VERSION
