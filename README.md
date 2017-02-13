@@ -32,7 +32,7 @@ Let's run a zookeeper container :
 
 ```bash
 docker run -it -e "SETUP_DEBUG=true" engapa/zookeeper:${ZOO_VERSION} \
- /bin/bash -c "zk_setup.sh && zkServer.sh start-foreground"
+ /bin/bash -c "zk_setup.sh && ./zkServer.sh start-foreground"
 ```
 
 >NOTE: We've pass a SETUP_DEBUG environment variable to view the setup process of config files.
@@ -53,7 +53,7 @@ So we can configure our zookeeper server in docker run time :
 
 ```bash
 $docker run -it -d -e "LOG4J_log4j_rootLogger=DEBUG, stdout" \
-engapa/zookeeper:${ZOO_VERSION} /bin/bash -c "zk_setup.sh && zkServer.sh start-foreground"
+engapa/zookeeper:${ZOO_VERSION} /bin/bash -c "zk_setup.sh && ./zkServer.sh start-foreground"
 ```
 
 Also you may use `--env-file` option to load these variables from a file.
