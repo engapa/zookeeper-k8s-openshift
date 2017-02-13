@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/engapa/zookeeper/tree/master.svg?style=svg)](https://circleci.com/gh/engapa/zookeeper/tree/master)
+[![CircleCI](https://circleci.com/gh/engapa/zookeeper-docker/tree/master.svg?style=svg)](https://circleci.com/gh/engapa/zookeeper-docker/tree/master)
 [![Docker Pulls](https://img.shields.io/docker/pulls/engapa/zookeeper.svg)](https://hub.docker.com/r/engapa/zookeeper/)
 [![Docker Stars](https://img.shields.io/docker/stars/engapa/zookeeper.svg)](https://hub.docker.com/r/engapa/zookeeper/)
 [![Docker Layering](https://images.microbadger.com/badges/image/engapa/zookeeper.svg)](https://microbadger.com/images/engapa/zookeeper)
