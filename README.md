@@ -47,7 +47,7 @@ PREFIX     | FILE (${ZOO_HOME}/config) |         Example
 -----------|-----------------------------|-----------------------------
 ZK_        | zoo.cfg | ZK_maxClientCnxns=0 --> maxClientCnxns=0
 LOG4J_     | log4j.properties |  LOG4J_log4j_rootLogger=INFO, stdout--> log4j.rootLogger=INFO, stdout
-JAVA_ZK_   | java.env | JAVA_ZK_appender_stderr_Target=System.err --> log4j.appender.stderr.Target=System.err
+JAVA_ZK_   | java.env | JAVA_ZK_JVMFLAG="-Xmx1G -Xms1G" --> JVMFLAG="-Xmx1G -Xms1G"
 
 So we can configure our zookeeper server in docker run time :
 
