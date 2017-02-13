@@ -20,6 +20,7 @@ function download_zoo_release () {
   rm -rf /tmp/zookeeper.tar.{gz, gz.asc} \
          /tmp/KEYS
   rm -rf $ZOO_HOME/{CHANGES.txt,NOTICE.txt,LICENSE.txt,README*} \
+         $ZOO_HOME/build* \
          $ZOO_HOME/ivy* \
          $ZOO_HOME/recipes \
          $ZOO_HOME/src \
