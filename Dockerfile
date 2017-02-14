@@ -41,7 +41,7 @@ RUN set -x \
 USER $ZOO_USER
 WORKDIR $ZOO_HOME/bin/
 
-ENTRYPOINT $ZOO_HOME/bin/zk_env.sh
+ENTRYPOINT ["./zk_env.sh"]
 
 
 
