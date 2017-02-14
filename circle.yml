@@ -11,7 +11,7 @@ dependencies:
 
 test:
   override:
-    - docker run -it --name zk -d engapa/zookeeper:$ZOO_VERSION /bin/bash -c "source zk_env.sh && zk_setup.sh && ./zkServer.sh start-foreground"
+    - docker run -it --name zk -d engapa/zookeeper:$ZOO_VERSION /bin/bash -c "zk_setup.sh && ./zkServer.sh start-foreground"
     - if [ $(docker inspect -f {{.State.Running}} zk) == 'true' ]; then exit 0; else exit 1; fi
 
 deployment:
