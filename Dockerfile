@@ -42,6 +42,3 @@ USER $ZOO_USER
 WORKDIR $ZOO_HOME/bin/
 
 ENTRYPOINT ["./zk_env.sh"]
-
-
-
