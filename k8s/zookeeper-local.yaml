@@ -24,7 +24,7 @@ metadata:
   name: zk
 spec:
   serviceName: zk-svc
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -32,8 +32,8 @@ spec:
     spec:
       containers:
       - name: zk
-        imagePullPolicy: Always
-        image: engapa/zookeeper:3.4.9
+        imagePullPolicy: IfNotPresent
+        image: engapa/zookeeper:3.4.10
         ports:
         - containerPort: 2181
           name: zkclient
@@ -43,7 +43,7 @@ spec:
           name: zkleader
         env:
         - name: ZOO_REPLICAS
-          value: "3"
+          value: "1"
         command:
         - /bin/bash
         - -c
