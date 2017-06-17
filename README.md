@@ -10,7 +10,7 @@ The aim of this project is create/use zookeeper docker images.
 
 ```bash
 export ZOO_HOME="/opt/zookeeper"
-export ZOO_VERSION="3.4.9"
+export ZOO_VERSION="3.4.10"
 $docker build --build-arg ZOO_VERSION=$ZOO_VERSION --build-arg ZOO_HOME=$ZOO_HOME \
 -t engapa/zookeeper:${ZOO_VERSION} .
 ```
@@ -62,9 +62,13 @@ And , of course, you could provide your own properties files directly by option 
 
 # k8s
 
-In [k8s directory](k8s) there are some examples and utilities for Kubernetes
+In [k8s directory](k8s) directory there are some resources for Kubernetes
 
 Thanks to kubernetes team for the [contrib](https://github.com/kubernetes/contrib/tree/master/statefulsets/zookeeper) .
+
+# Openshift
+
+In [openshift](openshift) directory we have a couple of templates to install within Openshift
 
 # Author
 

@@ -2,7 +2,7 @@ machine:
   services:
     - docker
   environment:
-    ZOO_VERSION: 3.4.9
+    ZOO_VERSION: 3.4.10
 
 dependencies:
   override:
