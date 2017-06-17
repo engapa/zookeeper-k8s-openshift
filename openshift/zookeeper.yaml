@@ -125,7 +125,7 @@ objects:
         containers:
         - name: ${NAME}
           imagePullPolicy: Always
-          image: bbvalabs/zookeeper:${ZOO_VERSION}
+          image: engapa/zookeeper:${ZOO_VERSION}
           ports:
           - containerPort: ${ZOO_CLIENT_PORT}
             name: client
