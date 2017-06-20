@@ -124,7 +124,7 @@ objects:
       spec:
         containers:
         - name: ${NAME}
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           image: engapa/zookeeper:${ZOO_VERSION}
           ports:
           - containerPort: ${ZOO_CLIENT_PORT}
