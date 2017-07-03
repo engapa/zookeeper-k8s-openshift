@@ -22,6 +22,8 @@ apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: zk
+  labels:
+    app: zk
 spec:
   serviceName: zk-svc
   replicas: 3

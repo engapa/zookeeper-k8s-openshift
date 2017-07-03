@@ -36,7 +36,15 @@ $ oc new-app zk [-p parameter=value]
 $ minishift console
 ```
 
+## Cleanup
 
+This command removes all resources belong to zookeeper cluster
+
+```sh
+oc delete all,statefulset,pvc -l app=<NAME>
+```
+
+> **NAME**: the name of the cluster provided by you when create it
 
 
 

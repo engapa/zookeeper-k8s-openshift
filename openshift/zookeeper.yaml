@@ -98,6 +98,8 @@ objects:
   kind: StatefulSet
   metadata:
     name: ${NAME}
+    labels:
+      app: ${NAME}
   spec:
     serviceName: ${NAME}-svc
     replicas: ${ZOO_REPLICAS}
