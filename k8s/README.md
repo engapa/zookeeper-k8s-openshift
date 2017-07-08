@@ -4,16 +4,19 @@ Here we have some examples of resources that may be deployed on your kubernetes 
 
 Tests were done using version 1.6.0 of kubernetes.
 
-
 ## Launch a cluster
 
-Just type next command to create a zookeeper cluster:
+Adjust the contents of file `zookeeper.yaml` file and type next command to create a zookeeper cluster:
 
 ```bash
 $ kubectl create -f zookeeper.yaml
 ```
 
-You may use the Openshift dashboard if you prefer to do that from a web interface.
+## Use a helm chart
+
+As you know Helm is a tool for managing kubernetes charts.
+
+[Here](helm) you can find all details to install the zookeeper chart.
 
 ## Local testing
 

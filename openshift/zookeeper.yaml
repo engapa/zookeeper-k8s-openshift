@@ -159,11 +159,7 @@ objects:
           - name : ZOO_ELECTION_PORT
             value: ${ZOO_ELECTION_PORT}
           - name : JAVA_ZK_JVMFLAG
-            value: "\"-Xmx=${RESOURCE_MEMORY_REQ} -Xms=${RESOURCE_MEMORY_LIMIT}\""
-          command:
-          - /bin/bash
-          - -c
-          - source zk_env.sh && zk_setup.sh && ./zkServer.sh start-foreground
+            value: "\"-Xms=${RESOURCE_MEMORY_REQ} -Xmx=${RESOURCE_MEMORY_LIMIT}\""
           readinessProbe:
             exec:
               command:

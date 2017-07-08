@@ -46,10 +46,6 @@ spec:
         env:
         - name: ZOO_REPLICAS
           value: "1"
-        command:
-        - /bin/bash
-        - -c
-        - source zk_env.sh && zk_setup.sh && ./zkServer.sh start-foreground
         readinessProbe:
           exec:
             command:

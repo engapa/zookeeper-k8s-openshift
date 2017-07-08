@@ -1,3 +1,4 @@
 .*
+!.helmignore
 !.dockerignore
 !.gitignore

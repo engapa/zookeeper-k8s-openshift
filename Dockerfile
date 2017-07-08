@@ -44,3 +44,5 @@ WORKDIR $ZOO_HOME/bin/
 EXPOSE ${ZK_clientPort:-2181} ${ZOO_SERVER_PORT:-2888} ${ZOO_ELECTION_PORT:-3888}
 
 ENTRYPOINT ["./zk_env.sh"]
+
+CMD zk_setup.sh && ./zkServer.sh start-foreground

@@ -13,7 +13,9 @@ fi
 DEBUG=${SETUP_DEBUG:-false}
 LOWER=${SETUP_LOWER:-false}
 
-mv $ZOO_CONF_DIR/zoo_sample.cfg $ZOO_CONF_DIR/zoo.cfg
+if [ -f $ZOO_CONF_DIR/zoo_sample.cfg ]; then
+  mv $ZOO_CONF_DIR/zoo_sample.cfg $ZOO_CONF_DIR/zoo.cfg
+fi
 
 # Zookeeper config
 PREFIX=ZK_ DEST_FILE=${ZOO_CONF_DIR}/zoo.cfg env_vars_in_file

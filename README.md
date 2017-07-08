@@ -31,8 +31,7 @@ This image hasn't any `CMD` entry, users are the responsible for launching any c
 Let's run a zookeeper container :
 
 ```bash
-docker run -it -e "SETUP_DEBUG=true" engapa/zookeeper:${ZOO_VERSION} \
- /bin/bash -c "zk_setup.sh && ./zkServer.sh start-foreground"
+docker run -it -e "SETUP_DEBUG=true" engapa/zookeeper:${ZOO_VERSION}
 ```
 
 >NOTE: We've pass a SETUP_DEBUG environment variable to view the setup process of config files.
@@ -52,8 +51,7 @@ JAVA_ZK_   | java.env | JAVA_ZK_JVMFLAG="-Xmx1G -Xms1G" --> JVMFLAG="-Xmx1G -Xms
 So we can configure our zookeeper server in docker run time :
 
 ```bash
-$docker run -it -d -e "LOG4J_log4j_rootLogger=DEBUG, stdout" \
-engapa/zookeeper:${ZOO_VERSION} /bin/bash -c "zk_setup.sh && ./zkServer.sh start-foreground"
+$docker run -it -d -e "LOG4J_log4j_rootLogger=DEBUG, stdout"
 ```
 
 Also you may use `--env-file` option to load these variables from a file.
