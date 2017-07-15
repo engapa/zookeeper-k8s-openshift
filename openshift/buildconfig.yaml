@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: zk-builder
+  annotations:
+    description: Zookeeper image build template
+    openshift.io/display-name: Zookeeper Image Builder
+    iconClass: icon-database
+    tags: database,zookeeper
+labels:
+  template: zk-builder
+  component: zk
+
+parameters:
+- name: GITHUB_REPOSITORY
+  value: "https://github.com/engapa/zookeeper-k8s-openshift"
+  description: Source code respository (Github)
+  required: true
+- name: GITHUB_REF
+  description: Github source ref
+  value: "master"
+  required: true
+- name: GITHUB_HOOK_SECRET
+  description: Secret to notify a change from Github.
+  value: "secretito"
+  required: false
+- name: IMAGE_STREAM_NAME
+  description:
+  value: "zookeeper"
+  required: true
+- name: IMAGE_STREAM_VERSION
+  description:
+  value: "latest"
+  required: true
+
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: ${IMAGE_STREAM_NAME}
+    spec: {}
+
+- kind: BuildConfig
+  apiVersion: v1
+  metadata:
+    name: zk-builder
+  spec:
+    runPolicy: Serial
+    triggers:
+      - type: GitHub
+        github:
+          secret: ${GITHUB_HOOK_SECRET}
+      - type: ConfigChange
+    source:
+      git:
+        uri: ${GITHUB_REPOSITORY}
+        ref: ${GITHUB_REF}
+    strategy:
+      type: Docker
+    output:
+      to:
+        kind: ImageStreamTag
+        name: "${IMAGE_STREAM_NAME}:${IMAGE_STREAM_VERSION}"
