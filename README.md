@@ -9,9 +9,9 @@ The aim of this project is create/use zookeeper docker images.
 # Build an image
 
 ```bash
-export ZOO_HOME="/opt/zookeeper"
-export ZOO_VERSION="3.4.10"
-$docker build --build-arg ZOO_VERSION=$ZOO_VERSION --build-arg ZOO_HOME=$ZOO_HOME \
+$ export ZOO_HOME="/opt/zookeeper"
+$ export ZOO_VERSION="3.4.10"
+$ docker build --build-arg ZOO_VERSION=$ZOO_VERSION --build-arg ZOO_HOME=$ZOO_HOME \
 -t engapa/zookeeper:${ZOO_VERSION} .
 ```
 
@@ -21,17 +21,16 @@ The built docker image will contain a zookeeper distribution (${ZOO_VERSION}) un
 Besides, we've added two scripts :
 
 * zk_env.sh : Export needed env variable for setup script.
-* zk_setup.sh : Configure zookeeper dynamically , based on [utils-docker project](https://github.com/engapa/utils-docker)
+* zk_setup.sh : Configure zookeeper dynamically, based on [utils-docker project](https://github.com/engapa/utils-docker)
 
 # Run a container
 
-By default the entrypoint of container is **zk_env.sh**.
-This image hasn't any `CMD` entry, users are the responsible for launching any command when they are going to run the container.
+By default the container entrypoint is `./zk_env.sh` and the cmd directive is `zk_setup.sh && ./zkServer.sh start-foreground`.
 
 Let's run a zookeeper container :
 
 ```bash
-docker run -it -e "SETUP_DEBUG=true" engapa/zookeeper:${ZOO_VERSION}
+$ docker run -it -e "SETUP_DEBUG=true" engapa/zookeeper:${ZOO_VERSION}
 ```
 
 >NOTE: We've pass a SETUP_DEBUG environment variable to view the setup process of config files.
@@ -48,25 +47,25 @@ ZK_        | zoo.cfg | ZK_maxClientCnxns=0 --> maxClientCnxns=0
 LOG4J_     | log4j.properties |  LOG4J_log4j_rootLogger=INFO, stdout--> log4j.rootLogger=INFO, stdout
 JAVA_ZK_   | java.env | JAVA_ZK_JVMFLAG="-Xmx1G -Xms1G" --> JVMFLAG="-Xmx1G -Xms1G"
 
-So we can configure our zookeeper server in docker run time :
+So we can configure our zookeeper server in docker run time:
 
 ```bash
-$docker run -it -d -e "LOG4J_log4j_rootLogger=DEBUG, stdout"
+$ docker run -it -d -e "LOG4J_log4j_rootLogger=DEBUG, stdout"
 ```
 
 Also you may use `--env-file` option to load these variables from a file.
 
-And , of course, you could provide your own properties files directly by option `-v` and don't use zk_setup script.
+And, of course, you could provide your own properties files directly by option `-v` and don't use zk_setup script.
 
 # k8s
 
-In [k8s directory](k8s) directory there are some resources for Kubernetes
+In [k8s directory](k8s) directory there are some resources for Kubernetes.
 
-Thanks to kubernetes team for the [contrib](https://github.com/kubernetes/contrib/tree/master/statefulsets/zookeeper) .
+Thanks to kubernetes team for the [contrib](https://github.com/kubernetes/contrib/tree/master/statefulsets/zookeeper).
 
 # Openshift
 
-In [openshift](openshift) directory we have a couple of templates to install within Openshift
+In [openshift](openshift) directory we have a couple of templates to install within Openshift.
 
 # Author
 
