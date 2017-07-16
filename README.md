@@ -33,11 +33,11 @@ Let's run a zookeeper container :
 $ docker run -it -e "SETUP_DEBUG=true" engapa/zookeeper:${ZOO_VERSION}
 ```
 
->NOTE: We've pass a SETUP_DEBUG environment variable to view the setup process of config files.
+>NOTE: We've passed a SETUP_DEBUG environment variable to view the setup process of config files.
 
 ## Setting up
 
-Users can pass parameters to config files just adding environment variables with specific name patterns.
+Users can configure parameters in config files just adding environment variables with specific name patterns.
 
 This table collects the patterns of variable names which will are written in each file:
 
@@ -59,13 +59,13 @@ And, of course, you could provide your own properties files directly by option `
 
 # k8s
 
-In [k8s directory](k8s) directory there are some resources for Kubernetes.
+In [k8s directory](k8s) there are some resources for Kubernetes.
 
 Thanks to kubernetes team for the [contrib](https://github.com/kubernetes/contrib/tree/master/statefulsets/zookeeper).
 
 # Openshift
 
-In [openshift](openshift) directory we have a couple of templates to install within Openshift.
+In [openshift directory](openshift) we have a couple of templates to install it within Openshift.
 
 # Author
 
