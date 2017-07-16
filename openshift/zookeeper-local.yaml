@@ -1,25 +1,30 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: zookeeper
+  name: zk
   annotations:
     openshift.io/display-name: Zookeeper
     description: An example of a replicated Zookeeper server
     iconClass: icon-database
     tags: database,zookeeper
 labels:
-  template: zookeeper
+  template: zk
+  component: zk
 parameters:
 - name: NAME
   value: zk
+  required: true
+- name: SOURCE_IMAGE
+  description: Container image source (by default from "engapa" dockerhub account)
+  value: engapa/zookeeper
+  required: false
+- name: ZOO_VERSION
+  value: "3.4.10"
   required: true
 - name: ZOO_REPLICAS
   description: Number of nodes
   required: true
   value: "1"
-- name: ZOO_VERSION
-  value: "3.4.10"
-  required: true
 - name: ZOO_TICK_TIME
   description: The number of milliseconds of each tick
   required: true
@@ -107,7 +112,7 @@ objects:
         containers:
         - name: ${NAME}
           imagePullPolicy: IfNotPresent
-          image: engapa/zookeeper:${ZOO_VERSION}
+          image: ${SOURCE_IMAGE}:${ZOO_VERSION}
           ports:
           - containerPort: ${ZOO_CLIENT_PORT}
             name: client
@@ -139,7 +144,7 @@ objects:
           - name : ZOO_ELECTION_PORT
             value: ${ZOO_ELECTION_PORT}
           - name : JAVA_ZK_JVMFLAG
-            value: "\"-Xms=${RESOURCE_MEMORY_REQ} -Xmx=${RESOURCE_MEMORY_LIMIT}\""
+            value: "\"-Xms${RESOURCE_MEMORY_REQ} -Xmx${RESOURCE_MEMORY_LIMIT}\""
           readinessProbe:
             exec:
               command:
