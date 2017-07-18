@@ -61,12 +61,17 @@ parameters:
   description: Purge task interval in hours. Set to 0 to disable auto purge feature
   required: true
   value: '1'
+- name: ZOO_HEAP_SIZE
+  displayName: JVM heap size
+  description: JVM heap size
+  required: true
+  value: "-Xmx512M -Xms512M"
 - name: RESOURCE_MEMORY_REQ
-  description: "The memory resource request (G: giga, M: mega)."
-  value: "1G"
+  description: The memory resource request.
+  value: "1Gi"
 - name: RESOURCE_MEMORY_LIMIT
-  description: "The limits for memory resource (G: giga, M: mega)."
-  value: "1G"
+  description: The limits for memory resource.
+  value: "2Gi"
 - name: RESOURCE_CPU_REQ
   description: The CPU resource request.
   value: "1"
@@ -78,7 +83,7 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
-    name: ${NAME}-svc
+    name: ${NAME}
     labels:
       app: ${NAME}
     annotations:
@@ -102,7 +107,7 @@ objects:
     labels:
       app: ${NAME}
   spec:
-    serviceName: ${NAME}-svc
+    serviceName: ${NAME}
     replicas: ${ZOO_REPLICAS}
     template:
       metadata:
@@ -143,8 +148,8 @@ objects:
             value: ${ZOO_SERVER_PORT}
           - name : ZOO_ELECTION_PORT
             value: ${ZOO_ELECTION_PORT}
-          - name : JAVA_ZK_JVMFLAG
-            value: "\"-Xms${RESOURCE_MEMORY_REQ} -Xmx${RESOURCE_MEMORY_LIMIT}\""
+          - name: JAVA_ZK_JVMFLAG
+            value: "\"${ZOO_HEAP_SIZE}\""
           readinessProbe:
             exec:
               command:
@@ -159,8 +164,8 @@ objects:
             timeoutSeconds: 5
           resources:
             requests:
-              memory: ${RESOURCE_MEMORY_REQ}i
+              memory: ${RESOURCE_MEMORY_REQ}
               cpu: ${RESOURCE_CPU_REQ}
             limits:
-              memory: ${RESOURCE_MEMORY_LIMIT}i
+              memory: ${RESOURCE_MEMORY_LIMIT}
               cpu: ${RESOURCE_CPU_LIMIT}
