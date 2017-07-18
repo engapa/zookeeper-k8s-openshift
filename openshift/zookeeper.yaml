@@ -7,8 +7,6 @@ metadata:
     description: An example of a replicated Zookeeper server
     iconClass: icon-database
     tags: database,zookeeper
-    labels:
-      component: zk
 labels:
   template: zk
   component: zk
