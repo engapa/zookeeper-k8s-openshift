@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: zk-svc
+  name: zk
   labels:
-    app: zk
+    zk-name: zk
+    component: zk
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
 spec:
@@ -16,49 +17,28 @@ spec:
     name: zkleader
   clusterIP: None
   selector:
-    app: zk
+    zk-name: zk
 ---
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: zk
   labels:
-    app: zk
+    zk-name: zk
+    component: zk
 spec:
   serviceName: zk-svc
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
-        app: zk
-      annotations:
-          scheduler.alpha.kubernetes.io/affinity: >
-              {
-                "podAntiAffinity": {
-                  "requiredDuringSchedulingIgnoredDuringExecution": [{
-                    "labelSelector": {
-                      "matchExpressions": [{
-                        "key": "app",
-                        "operator": "In",
-                        "values": ["zk"]
-                      }]
-                    },
-                    "topologyKey": "kubernetes.io/hostname"
-                  }]
-                }
-              }
+        zk-name: zk
+        component: zk
     spec:
       containers:
       - name: zk
         imagePullPolicy: IfNotPresent
         image: engapa/zookeeper:3.4.10
-        resources:
-          requests:
-            memory: 1Gi
-            cpu: 1
-          limits:
-            memory: 1Gi
-            cpu: 1
         ports:
         - containerPort: 2181
           name: zkclient
@@ -68,9 +48,7 @@ spec:
           name: zkleader
         env:
         - name: ZOO_REPLICAS
-          value: "3"
-        - name: JAVA_ZK_JVMFLAG
-          value: "\"-Xmx1G -Xms1G\""
+          value: "1"
         readinessProbe:
           exec:
             command:
