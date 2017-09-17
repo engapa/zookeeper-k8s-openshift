@@ -1,10 +1,10 @@
-[![CircleCI](https://circleci.com/gh/engapa/zookeeper-docker/tree/master.svg?style=svg)](https://circleci.com/gh/engapa/zookeeper-docker/tree/master)
+[![Build Status](https://travis-ci.org/engapa/zookeeper-k8s-openshift.svg)](https://travis-ci.org/engapa/zookeeper-k8s-openshift)
 [![Docker Pulls](https://img.shields.io/docker/pulls/engapa/zookeeper.svg)](https://hub.docker.com/r/engapa/zookeeper/)
 [![Docker Stars](https://img.shields.io/docker/stars/engapa/zookeeper.svg)](https://hub.docker.com/r/engapa/zookeeper/)
 [![Docker Layering](https://images.microbadger.com/badges/image/engapa/zookeeper.svg)](https://microbadger.com/images/engapa/zookeeper)
 # Zookeeper Docker Image
 
-The aim of this project is create/use zookeeper docker images.
+The aim of this project is provide optimised zookeeper docker images to run into 'statefulsets' on kubernetes.
 
 These main scripts are used to build/run the image/container:
 
@@ -21,6 +21,8 @@ $ export ZOO_VERSION="3.4.10"
 $ docker build --build-arg ZOO_VERSION=$ZOO_VERSION --build-arg ZOO_HOME=$ZOO_HOME \
 -t engapa/zookeeper:${ZOO_VERSION} .
 ```
+
+> NOTE: `build-arg` options and export directives are optional.
 
 # Run a container
 
