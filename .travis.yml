@@ -13,6 +13,7 @@ install:
 - docker run -it --name zk -d engapa/zookeeper:$ZOO_VERSION /bin/bash -c "zk_setup.sh && ./zkServer.sh start-foreground"
 
 script:
+- sleep 10
 - docker exec -it zk zk_status.sh
 
 after_script:
@@ -20,6 +21,5 @@ after_script:
 - docker rm zk
 
 after_success:
-  - >
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push engapa/zookeeper:$ZOO_VERSION
+- docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+- docker push engapa/zookeeper:$ZOO_VERSION
