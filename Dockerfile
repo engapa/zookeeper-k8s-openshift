@@ -22,8 +22,11 @@ ADD zk_download.sh /tmp/
 
 RUN set -ex; \
     mkdir -p $ZOO_HOME; \
-    chmod a+x /tmp/zk_download.sh; \
-    /tmp/zk_download.sh; \
+    chmod a+x /tmp/zk_download.sh;
+
+RUN /tmp/zk_download.sh
+
+RUN set -ex \
     rm -rf /tmp/zk_download.sh; \
     apk del wget gnupg
 
