@@ -16,10 +16,13 @@ script:
 - sleep 10
 - docker exec -it zk zk_status.sh
 
-after_script:
-- docker stop zk
-- docker rm zk
-
 after_success:
 - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 - docker push engapa/zookeeper:$ZOO_VERSION
+- if [ "$TRAVIS_BRANCH" == "master" ]; then
+  docker push engapa/zookeeper:latest;
+  fi
+
+after_script:
+- docker stop zk
+- docker rm zk
