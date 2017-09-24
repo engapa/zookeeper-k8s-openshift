@@ -15,8 +15,8 @@ parameters:
   value: zk
   required: true
 - name: SOURCE_IMAGE
-  description: Container image source (by default from "engapa" dockerhub account)
-  value: engapa/zookeeper
+  description: Container image
+  value: zookeeper
   required: true
 - name: ZOO_VERSION
   description: Version

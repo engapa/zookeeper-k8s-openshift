@@ -29,9 +29,9 @@ NAME        DOCKER REPO                           TAGS      UPDATED
 zookeeper   172.30.1.1:5000/myproject/zookeeper   3.4.10    1 days ago
 ```
 
-3 - If you want to use this local/private image for your pod containers then use the "DOCKER REPO" value as `SOURCE_IMAGE` parameter value, and use one of the "TAGS" values as `ZOO_VERSION` parameter value (e.g: 172.30.1.1:5000/myproject/zookeeper:3.4.10).
+3 - If you want to use this local/private image from containers on other projects then use the "\<project\>/NAME" value as `SOURCE_IMAGE` parameter value, and use one value of "TAGS" as `ZOO_VERSION` parameter value (e.g: myproject/zookeeper:3.4.10).
 
-4 - Launch the builder again with another commit or whenever you want:
+4 - \[Optional\] Launch the builder again with another commit or whenever you want:
 
 ```sh
 $ oc start-build zk-builder --commit=master
@@ -171,5 +171,6 @@ $ oc delete all,statefulset[,pvc] -l component=zk [-n <namespace>] [--all-namesp
 And finally if you even want to remove the template:
 
 ```sh
+$ oc delete template zk-builder
 $ oc delete template zk[-persistent] [-n <namespace>] [--all-namespaces]
 ```

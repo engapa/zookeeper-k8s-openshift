@@ -20,8 +20,8 @@ after_success:
 - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 - docker push engapa/zookeeper:$ZOO_VERSION
 - if [ "$TRAVIS_BRANCH" == "master" ]; then
-  docker build --no-cache -t engapa/zookeeper:latest;
-  docker push engapa/zookeeper:latest;
+    docker build --no-cache -t engapa/zookeeper:latest;
+    docker push engapa/zookeeper:latest;
   fi
 
 after_script:
