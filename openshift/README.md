@@ -50,28 +50,55 @@ You may use the Openshift dashboard if you prefer to do that through the web int
 
 ## Local environment
 
-We recommend to use "minishift" in order to get quickly a ready Openshift deployment.
+We recommend to use [minishift](https://github.com/minishift/minishift) in order to get quickly a standalone Openshift cluster.
 
-Check out the Openshift version by typing:
+Running Openshift cluster:
 
 ```bash
-$ minishift get-openshift-versions
-$ minishift config get openshift-version
+[$ minishift update]
+$ minishift version
+minishift v1.6.0+7a71565
+$ minishift start [options]
+...
+Starting OpenShift using openshift/origin:v3.6.0 ...
+Pulling image openshift/origin:v3.6.0
+...
+$ minishift openshift version
+openshift v3.6.0+c4dd4cf
+kubernetes v1.6.1+5115d708d7
+etcd 3.2.1
 ```
+>NOTE: minishift has configured the oc client correctly to connect to local Openshift cluster properly.
 
-If no version is showed in last command this means that the latest stable version is being used.
+It's possible to start an Openshift machine by the CLI directly, try `oc cluster up --create-machine`, or if you want to use a specific docker machine rather create a VM then type `oc cluster up --docker-machine=<machine-name>`
 
-Run your local openshift origin and deploy an ephemeral zookeeper cluster:
+Now Openshift cluster is ready to we could deploy the kafka cluster by the web console or through the shell command client (CLI):
+
+1 - Using the web console:
 
 ```bash
-$ minishift config set openshift-version <openshift-version>
-$ minishift start
-$ oc create -f zk.yaml
-$ oc new-app zk[-persistent] [-p SOURCE_IMAGE="172.30.1.1:5000/myproject/zookeeper:3.4.10"] [-p parameter=value ...]
 $ minishift console
 ```
 
-> NOTE: values between "[]" characters are optional, and those ones between "\<\>" are required.
+The URL is in the output lines of `minishift start` command.
+
+For the first time enter a username and password, and create a project.
+Once we are in the project go to section **Import YAML / JSON** and write or select the content/file of [our template](buildconfig.yaml) to build the docker image.
+
+Type next command to get the same effect:
+
+== TRICK: Change permissions of default scc, `oc eidt scc restricted` and change runAsUser.type to RunAsAny ==
+
+```bash
+$ oc process -f buildconfig.yaml | oc create -f -
+```
+
+2 - Launch kafka cluster creation:
+
+```bash
+$ oc create -f zk[-persistent].yaml
+$ oc new-app zk [-p parameter=value]
+```
 
 ## Production environment
 
