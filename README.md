@@ -17,7 +17,7 @@ These main scripts are used to build/run the image/container:
 
 ```bash
 $ export ZOO_HOME="/opt/zookeeper"
-$ export ZOO_VERSION="3.4.10"
+$ export ZOO_VERSION="3.4.11"
 $ docker build --build-arg ZOO_VERSION=$ZOO_VERSION --build-arg ZOO_HOME=$ZOO_HOME \
 -t engapa/zookeeper:${ZOO_VERSION} .
 ```
