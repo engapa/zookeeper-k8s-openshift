@@ -2,6 +2,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/engapa/zookeeper.svg)](https://hub.docker.com/r/engapa/zookeeper/)
 [![Docker Stars](https://img.shields.io/docker/stars/engapa/zookeeper.svg)](https://hub.docker.com/r/engapa/zookeeper/)
 [![Docker Layering](https://images.microbadger.com/badges/image/engapa/zookeeper.svg)](https://microbadger.com/images/engapa/zookeeper)
+[![Docker image version](https://images.microbadger.com/badges/version/engapa/zookeeper.svg)](https://microbadger.com/images/engapa/zookeeper)
 # Zookeeper Docker Image
 
 The aim of this project is provide optimised zookeeper docker images to run into 'statefulsets' on kubernetes.
