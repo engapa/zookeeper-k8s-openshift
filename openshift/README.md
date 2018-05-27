@@ -16,7 +16,7 @@ Anyway, if you prefer to build the image in your private Openshift registry just
 
 ```sh
 $ oc create -f buildconfig.yaml
-$ oc new-app zk-builder -p GITHUB_REF="v3.4.12" IMAGE_STREAM_VERSION="3.4.10"
+$ oc new-app zk-builder -p GITHUB_REF="v3.4.12" IMAGE_STREAM_VERSION="3.4.12"
 ```
 
 Explore the command `oc new-build` to create a builder via shell command client.
