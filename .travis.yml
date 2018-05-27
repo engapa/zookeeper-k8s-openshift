@@ -1,7 +1,7 @@
 language: bash
 
 env:
-  ZOO_VERSION: 3.4.11
+  ZOO_VERSION: 3.4.12
 
 services:
 - docker

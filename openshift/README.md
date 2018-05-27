@@ -16,7 +16,7 @@ Anyway, if you prefer to build the image in your private Openshift registry just
 
 ```sh
 $ oc create -f buildconfig.yaml
-$ oc new-app zk-builder -p GITHUB_REF="v3.4.11" IMAGE_STREAM_VERSION="3.4.10"
+$ oc new-app zk-builder -p GITHUB_REF="v3.4.12" IMAGE_STREAM_VERSION="3.4.10"
 ```
 
 Explore the command `oc new-build` to create a builder via shell command client.
@@ -26,10 +26,10 @@ Explore the command `oc new-build` to create a builder via shell command client.
 ```sh
 $ oc get is -l component=zk [-n project]
 NAME        DOCKER REPO                           TAGS      UPDATED
-zookeeper   172.30.1.1:5000/myproject/zookeeper   3.4.11    1 days ago
+zookeeper   172.30.1.1:5000/myproject/zookeeper   3.4.12    1 days ago
 ```
 
-3 - If you want to use this local/private image from containers on other projects then use the "\<project\>/NAME" value as `SOURCE_IMAGE` parameter value, and use one value of "TAGS" as `ZOO_VERSION` parameter value (e.g: myproject/zookeeper:3.4.11).
+3 - If you want to use this local/private image from containers on other projects then use the "\<project\>/NAME" value as `SOURCE_IMAGE` parameter value, and use one value of "TAGS" as `ZOO_VERSION` parameter value (e.g: myproject/zookeeper:3.4.12).
 
 4 - \[Optional\] Launch the builder again with another commit or whenever you want:
 
@@ -43,7 +43,7 @@ Just type next command to create a zookeeper cluster by using statefulset on Ope
 
 ```bash
 $ oc create -f zookeeper.yaml
-$ oc new-app zk -p ZOO_REPLICAS=1 [-p SOURCE_IMAGE="172.30.1.1:5000/myproject/zookeeper:3.4.11"]
+$ oc new-app zk -p ZOO_REPLICAS=1 [-p SOURCE_IMAGE="172.30.1.1:5000/myproject/zookeeper:3.4.12"]
 ```
 
 You may use the Openshift dashboard if you prefer to do that through the web interface.
@@ -122,7 +122,7 @@ $ oc new-app zk-persistent -p NAME=myzk
      * With parameters:
         * NAME=myzk
         * SOURCE_IMAGE=bbvalabs/zookeeper
-        * ZOO_VERSION=3.4.11
+        * ZOO_VERSION=3.4.12
         * ZOO_REPLICAS=3
         * VOLUME_DATA_CAPACITY=1Gi
         * VOLUME_DATALOG_CAPACITY=1Gi

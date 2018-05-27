@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.Name}}
+  labels:
+    app: {{.Values.Name}}
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    component: "{{.Release.Name}}-{{.Values.Component}}"
+  annotations:
+    "helm.sh/created": {{.Release.Time.Seconds | quote }}
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  ports:
+  - port: 2181
+    name: zkclient
+  - port: 2888
+    name: zkserver
+  - port: 3888
+    name: zkleader
+  clusterIP: None
+  selector:
+    app: {{.Values.Name}}
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: {{.Values.Name}}
+  labels:
+    app: {{.Values.Name}}
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    component: "{{.Release.Name}}-{{.Values.Component}}"
+  annotations:
+    "helm.sh/created": {{.Release.Time.Seconds | quote }}
+spec:
+  serviceName: {{.Values.Name}}
+  replicas: {{ default 1 .Values.Replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.Name}}
+        component: "{{.Release.Name}}-{{.Values.Component}}"
+      annotations:
+          scheduler.alpha.kubernetes.io/affinity: >
+              {
+                "podAntiAffinity": {
+                  "requiredDuringSchedulingIgnoredDuringExecution": [{
+                    "labelSelector": {
+                      "matchExpressions": [{
+                        "key": "app",
+                        "operator": "In",
+                        "values": ["{{.Values.Name}}"]
+                      }]
+                    },
+                    "topologyKey": "kubernetes.io/hostname"
+                  }]
+                }
+              }
+    spec:
+      containers:
+      - name: {{.Values.Name}}
+        imagePullPolicy: "{{.Values.ImagePullPolicy}}"
+        image: "{{.Values.Image}}:{{.Values.ImageTag}}"
+        resources:
+          limits:
+            cpu: "{{ .Values.MaxCpu }}"
+            memory: "{{ .Values.MaxMemory }}"
+          requests:
+            cpu: "{{ .Values.Cpu }}"
+            memory: "{{ .Values.Memory }}"
+        ports:
+        - containerPort: 2181
+          name: zkclient
+        - containerPort: 2888
+          name: zkserver
+        - containerPort: 3888
+          name: zkleader
+        env:
+        - name: ZOO_REPLICAS
+          value: {{ default 1 .Values.Replicas }}
+        - name: JAVA_ZK_JVMFLAG
+          value: "\"-Xmx{{ .Values.Memory }} -Xms{{ .Values.MaxMemory }}\""
+        readinessProbe:
+          exec:
+            command:
+            - zk_status.sh
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - zk_status.sh
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
