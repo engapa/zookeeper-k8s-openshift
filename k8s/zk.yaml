@@ -38,7 +38,7 @@ spec:
       containers:
       - name: zk
         imagePullPolicy: IfNotPresent
-        image: engapa/zookeeper:3.4.12
+        image: engapa/zookeeper:3.4.13
         ports:
         - containerPort: 2181
           name: zkclient

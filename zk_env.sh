@@ -28,7 +28,7 @@ if [ $ZOO_REPLICAS -gt 1 ];then
     zk_local_cluster
     export ZOO_MY_ID=$((ORD+1))
   else
-    echo "Unable to create local Zookeeper. Name of host doesn't match with pattern: (.*)-([0-9]+). Consider using PetSets or StatefulSets."
+    echo "Unable to create local Zookeeper. Name of host doesn't match with pattern: (.*)-([0-9]+). Consider to use PetSets or StatefulSets."
     exit 1
   fi
 fi

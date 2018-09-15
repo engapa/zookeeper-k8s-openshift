@@ -13,7 +13,7 @@ namespace:
 
 ```sh
 $ helm repo add engapa http://storage.googleapis.com/kubernetes-charts-incubator
-$ helm install --name zookeeper-3.4.12 engapa/zookeeper
+$ helm install --name zookeeper-3.4.13 engapa/zookeeper
 ```
 
 If using a dedicated namespace (recommended) then make sure the namespace
@@ -21,7 +21,7 @@ exists with:
 
 ```sh
 $ kubectl create ns zookeeper
-$ helm install --name zookeeper-3.4.12 --set global.namespace=zookeeper engapa/zookeeper
+$ helm install --name zookeeper-3.4.13 --set global.namespace=zookeeper engapa/zookeeper
 ```
 
 The chart can be customized using the
@@ -31,7 +31,7 @@ following configurable parameters:
 | ----------------------- | ----------------------------------- | ---------------------------------------------------------- |
 | `Name`                  | Zookeeper resource names            | `zk`                                                       |
 | `Image`                 | Zookeeper container image name      | `engapa/zookeeper`                                            |
-| `ImageTag`              | Zookeeper container image tag       | `3.4.12`                                                 |
+| `ImageTag`              | Zookeeper container image tag       | `3.4.13`                                                 |
 | `ImagePullPolicy`       | Zookeeper container pull policy     | `IfNotPresent`                                                   |
 | `Replicas`              | Zookeeper replicas                  | `3`                                                        |
 | `Component`             | Zookeeper k8s selector key          | `zk`                                                    |
@@ -45,6 +45,6 @@ Specify parameters using `--set key=value[,key=value]` argument to `helm install
 Alternatively a YAML file that specifies the values for the parameters can be provided like this:
 
 ```bash
-$ helm install --name zookeeper-3.4.12 -f values.yaml engapa/zookeeper
+$ helm install --name zookeeper-3.4.13 -f values.yaml engapa/zookeeper
 ```
 
