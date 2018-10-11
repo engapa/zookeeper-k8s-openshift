@@ -32,6 +32,17 @@ parameters:
   description:
   value: "latest"
   required: true
+- name: HTTP_PROXY
+  description: Any required HTTP Proxy
+  value: ""
+  required: false
+- name: HTTPS_PROXY
+  description: Any required HTTPS Proxy
+  value: ""
+- name: NO_PROXY
+  description: Any required NO_PROXY
+  value: ""
+  required: false
 
 objects:
 - apiVersion: v1
@@ -57,8 +68,25 @@ objects:
       git:
         uri: ${GITHUB_REPOSITORY}
         ref: ${GITHUB_REF}
+        httpProxy: ${HTTP_PROXY}
+        httpsProxy: ${HTTPS_PROXY}
+        noProxy: ${NO_PROXY}
     strategy:
       type: Docker
+      dockerStrategy:
+              env:
+                - name: "HTTP_PROXY"
+                  value: ${HTTP_PROXY}
+                - name: "HTTPS_PROXY"
+                  value: ${HTTPS_PROXY}
+                - name: "NO_PROXY"
+                  value: ${NO_PROXY}
+                - name: "http_proxy"
+                  value: ${HTTP_PROXY}
+                - name: "https_proxy"
+                  value: ${HTTPS_PROXY}
+                - name: "no_proxy"
+                  value: ${NO_PROXY}
     output:
       to:
         kind: ImageStreamTag
