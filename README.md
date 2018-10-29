@@ -32,7 +32,7 @@ By default the container entrypoint is `./zk_env.sh` and the cmd directive is `z
 Let's run a zookeeper container with default environment variables:
 
 ```bash
-$ docker run -it engapa/zookeeper:${ZOO_VERSION}
+$ docker run -it --name ZK engapa/zookeeper:${ZOO_VERSION}
 ```
 
 ## Setting up
@@ -50,10 +50,11 @@ JAVA_ZK_   | java.env | JAVA_ZK_JVMFLAG="-Xmx1G -Xms1G" --> JVMFLAG="-Xmx1G -Xms
 So we can configure our zookeeper server by adding environments variables:
 
 ```bash
-$ docker run -it -d -e "SETUP_DEBUG=true" -e "LOG4J_log4j_rootLogger=DEBUG, stdout"
+$ docker run -it -d --name ZK -e "SETUP_DEBUG=true" -e "LOG4J_zookeeper_root_logger=DEBUG, CONSOLE" engapa/zookeeper:${ZOO_VERSION}
 ```
 
 > NOTE: We've passed a SETUP_DEBUG environment variable with value 'true' to view the setup process of config files.
+> . Show logs by command `docker logs ZK`
 
 Also you may use `--env-file` option to load these variables from a file.
 
