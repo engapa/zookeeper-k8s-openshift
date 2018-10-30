@@ -11,7 +11,7 @@ It isn't necessary to clone this repo, you can use directly resource URLs.
 - [oc](https://github.com/openshift/origin/releases) (openshift client, 3.10 \>=)
 - Openshift cluster (3.10 \>=)
 
-### DEV Environment
+### DEV environment
 
 We'll use only opensource, that is 'openshift origin'.
 
@@ -59,7 +59,7 @@ You may use the Openshift dashboard (`minishift console`) if you prefer to do th
 
 For local environment we'll use a non persistent deployments (zk.yaml)
 
-### PROD cluster (prod)
+### PROD environment
 
 To connect to external cluster we need to know the URL to login with your credentials.
 
