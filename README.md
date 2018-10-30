@@ -9,10 +9,10 @@ The aim of this project is provide optimised zookeeper docker images to run into
 
 These main scripts are used to build/run the image/container:
 
-* zk_env.sh: Export needed env variable for other scripts.
-* zk_download.sh: is used to download the suitable release of zookeeper (version `ZOO_VERSION`).
-* zk_setup.sh: Configure zookeeper dynamically, based on [utils-docker project](https://github.com/engapa/utils-docker).
-* zk_status.sh: health checks.
+* **zk_env.sh**: Export needed env variable for other scripts.
+* **zk_download.sh**: is used to download the suitable release of zookeeper (version `ZOO_VERSION`).
+* **zk_setup.sh**: Configure zookeeper dynamically, based on [utils-docker project](https://github.com/engapa/utils-docker).
+* **zk_status.sh**: health checks.
 
 # Building the docker image
 
@@ -23,7 +23,7 @@ $ docker build --build-arg ZOO_VERSION=$ZOO_VERSION --build-arg ZOO_HOME=$ZOO_HO
 -t engapa/zookeeper:${ZOO_VERSION} .
 ```
 
-> NOTE: `build-arg` options and export directives are optional.
+> NOTE: `build-arg` options and export directives are optional because are default values.
 
 # Run a container
 
@@ -44,7 +44,7 @@ This table collects the patterns of variable names which will are written in the
 PREFIX     | FILE (${ZOO_HOME}/config) |         Example
 -----------|-----------------------------|-----------------------------
 ZK_        | zoo.cfg | ZK_maxClientCnxns=0 --> maxClientCnxns=0
-LOG4J_     | log4j.properties |  LOG4J_log4j_rootLogger=INFO, stdout--> log4j.rootLogger=INFO, stdout
+LOG4J_     | log4j.properties |  LOG4J_zookeeper_root_logger=INFO, CONSOLE--> zookeeper.root.logger=INFO, CONSOLE
 JAVA_ZK_   | java.env | JAVA_ZK_JVMFLAG="-Xmx1G -Xms1G" --> JVMFLAG="-Xmx1G -Xms1G"
 
 So we can configure our zookeeper server by adding environments variables:
