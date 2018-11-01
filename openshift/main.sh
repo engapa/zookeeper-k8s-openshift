@@ -61,7 +61,7 @@ function zk_install()
 {
 
   echo "Deploying zookeeper ..."
-  ./oc run zk --image $ZK_IMAGE --port 2181 --labels="component=zk,app=zk"
+  ./oc run zk --image $ZK_IMAGE --port 2181 --labels="component=zk,zk-name=zk"
   ./oc expose deploy zk --name zk --port=2181 --cluster-ip=None --labels="component=zk,app=zk"
   echo "Zookeeper running on zk.<namespace>.svc.cluster.local"
 
@@ -112,8 +112,8 @@ function test-persistent()
 
 function test-all()
 {
-  test && ./oc delete --force=true -l component=zk -l app=zk all
-  test-persistent && ./oc delete --force=true -l component=zk -l app=zk all,pv,pvc
+  test && ./oc delete --force=true -l component=zk -l zk-name=zk all
+  test-persistent && ./oc delete --force=true -l component=zk -l zk-name=zk all,pv,pvc
 }
 
 function clean() # Destroy minishift vm
