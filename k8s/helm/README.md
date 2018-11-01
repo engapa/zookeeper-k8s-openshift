@@ -2,7 +2,7 @@
 
 ## Pre Requisites:
 
-* Kubernetes 1.6
+* Kubernetes 1.10
 
 * More than 1 node (if replicas is upper than 1) because of an antiaffinity scheduler policy
 
