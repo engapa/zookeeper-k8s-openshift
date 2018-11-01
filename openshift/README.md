@@ -75,7 +75,7 @@ It's required the same number of nodes that the value of parameter `ZOO_REPLICAS
 
 ## Building the image
 
-This is a recomended step, although you can always use the [public images at dockerhub](https://hub.docker.com/r/engapa/zookeeper) which are automatically uploaded with CI of this project.
+This is a recommended step, although you can always use the [public images at dockerhub](https://hub.docker.com/r/engapa/zookeeper) which are automatically uploaded with CI of this project.
 
 To build and save a docker image of zookeeper in your private Openshift registry just follow these instructions:
 
