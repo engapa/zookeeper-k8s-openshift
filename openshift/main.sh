@@ -9,6 +9,7 @@ MINISHIFT_VERSION=${MINISHIFT_VERSION:-"v1.26.1"}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+
 function oc-install()
 {
   # Download oc
@@ -20,27 +21,14 @@ function oc-install()
   sudo mv oc /usr/local/bin/oc
 }
 
-function minishift-install()
-{
-  # Download minishift
-  curl -LO https://github.com/minishift/minishift/releases/download/v1.26.1/minishift-1.26.1-linux-amd64.tgz
-  tar -xzf minishift-1.26.1-linux-amd64.tgz
-  mv minishift-1.26.1-linux-amd64/minishift ./minishift
-  rm -rf minishift-*
-  chmod a+x minishift
-  sudo mv minishift /usr/local/bin/minishift
-}
-
-function minishift-run()
+function oc-cluster-run()
 {
 
-  export MINISHIFT_HOME=$HOME
-  export CHANGE_MINISHIFT_NONE_USER=true
-  mkdir -p $HOME/.kube
-  touch $HOME/.kube/config
+  sudo vi
+  sudo reload
+  sudo restart
 
-  export KUBECONFIG=$HOME/.kube/config
-  sudo -E ./minishift start --vm-driver=none --cpus 2
+  oc cluster up --enable=[*]
 
   # Waiting for Minikube
   for i in {1..150}; do # timeout for 5 minutes
@@ -51,28 +39,18 @@ function minishift-run()
     sleep 2
   done
 
-}
-
-# $1: zookeper image
-function zk_install()
-{
-
-  echo "Deploying zookeeper ..."
-  oc run zk --image $ZK_IMAGE --port 2181 --labels="component=zk,zk-name=zk"
-  oc expose deploy zk --name zk --port=2181 --cluster-ip=None --labels="component=zk,app=zk"
-  echo "Zookeeper running on zk.<namespace>.svc.cluster.local"
+  oc create -f $DIR/zk.yaml
 
 }
 
-# $1 : file
-# $2 : Number of replicas
+# $1 : Number of replicas
 function check()
 {
 
-  SLEEP_TIME=8
+  SLEEP_TIME=10
   MAX_ATTEMPTS=10
   ATTEMPTS=0
-  until [ "$(oc get -f $1 -o jsonpath='{.items[?(@.kind=="StatefulSet")].status.readyReplicas}' 2>&1)" == "replicasOk=$2" ]; do
+  until [ "$(oc get statefulset -l zk-name=zk -o jsonpath='{.items[?(@.kind=="StatefulSet")].status.currentReplicas}' 2>&1)" == "$2" ]; do
     sleep $SLEEP_TIME
     ATTEMPTS=`expr $ATTEMPTS + 1`
     if [[ $ATTEMPTS -gt $MAX_ATTEMPTS ]]; then
@@ -86,38 +64,32 @@ function check()
 function test()
 {
   # Given
-  file=$DIR/zk.yaml
-  conf $file
   # When
-  oc create -f $file
-  oc new-app zk -p REPLICAS=1
+  oc new-app zk -p ZOO_REPLICAS=1
   # Then
-  check $file 3
-  # TODO: Use zookeeper client to validate e2e
+  check 1
+
 }
 
 function test-persistent()
 {
   # Given
-  install_zk
-  file=$DIR/zk-persistent.yaml
   # When
-  oc create -f $file
-  oc new-app zk -p REPLICAS=1
+  oc new-app zk -p ZOO_REPLICAS=1
   # Then
-  check $file 3
+  check 3
 }
 
 function test-all()
 {
-  test && oc delete --force=true -l component=zk -l zk-name=zk all
-  test-persistent && oc delete --force=true -l component=zk -l zk-name=zk all,pv,pvc
+  test && oc delete -l component=zk -l zk-name=zk all,pv,pvc,statefulset
+  test-persistent && oc delete -l component=zk -l zk-name=zk all,pv,pvc,statefulset
 }
 
-function clean() # Destroy minishift vm
+function oc-cluster-clean() # Destroy minishift vm
 {
   echo "Cleaning ...."
-  minishift delete
+  oc cluster delete
 }
 
 function help() # Show a list of functions

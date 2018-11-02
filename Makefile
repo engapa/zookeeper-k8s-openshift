@@ -57,21 +57,20 @@ minikube-test: ## Launch tests on minikube
 minikube-clean: ## Remove minikube
 	@k8s/main.sh clean
 
-.PHONY: minishift-install
-minishift-install: ## Install minishift and oc
-	@openshift/main.sh minishift-install
+.PHONY: oc-install
+minishift-install: ## Install oc tools
 	@openshift/main.sh oc-install
 
-.PHONY: minishift-run
-minishift-run: ## Run minishift
-	@openshift/main.sh minishift-run
+.PHONY: oc-cluster-run
+minishift-run: ## Run a cluster through oc command
+	@openshift/main.sh oc-cluster-run
 
-.PHONY: minishift-test
-minishift-test: ## Launch tests on minishift
+.PHONY: oc-cluster-test
+minishift-test: ## Launch tests on our local openshift cluster
 	@openshift/main.sh test
 
-.PHONY: minishift-clean
-minishift-clean: ## Remove minishift
-	@openshift/main.sh clean
+.PHONY: oc-cluster-clean
+minishift-clean: ## Remove openshift cluster
+	@openshift/main.sh oc-cluster-clean
 
 ## TODO: helm, ksonnet for deploy on kubernetes

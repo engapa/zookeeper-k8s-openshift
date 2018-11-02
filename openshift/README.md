@@ -31,8 +31,12 @@ openshift v3.11.0+57f8760-31
 ```
 >NOTE: minishift has configured the oc client correctly to connect to local Openshift cluster properly.
 
+With `oc` tools is possible get up a cluster as well, take a look at: https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md
+
+Supposing we have our openshift cluster ready:
+
 ```bash
-oc version
+$ oc version
 oc v3.11.0+0cbc58b
 kubernetes v1.11.0+d4cacc0
 features: Basic-Auth
