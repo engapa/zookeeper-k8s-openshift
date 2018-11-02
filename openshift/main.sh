@@ -89,10 +89,10 @@ function test-all()
   test-persistent && oc delete -l component=zk -l zk-name=zk all,pv,pvc,statefulset
 }
 
-function oc-cluster-clean() # Destroy minishift vm
+function oc-cluster-clean()
 {
   echo "Cleaning ...."
-  oc cluster delete
+  oc cluster down
 }
 
 function help() # Show a list of functions
