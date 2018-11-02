@@ -31,30 +31,23 @@ jobs:
               docker build -t ${DOCKER_USERNAME}/zookeeper:latest .;
               docker push ${DOCKER_USERNAME}/zookeeper:latest;
           fi
-#  k8s:
-#    machine: true
-#    steps:
-#      - checkout
-#      - run:
-#          name: bootstrapping
-#          command: |
-#            sudo curl -L https://github.com/dhiltgen/docker-machine-kvm/releases/download/v0.10.0/docker-machine-driver-kvm-ubuntu14.04 -o /usr/local/bin/docker-machine-driver-kvm
-#            sudo chmod +x /usr/local/bin/docker-machine-driver-kvm
-#            sudo apt-get update -y
-#            sudo apt-get install libvirt-bin qemu-kvm -y
-#            sudo usermod -a -G libvirtd circleci
-#            newgrp libvirtd
-#      - run:
-#          name: run minikube
-#          command: make minikube minikube-run
-#      - run:
-#          name: run zookeeper tests
-#          command: |
-#            make minikube-test
-#      - run:
-#          name: delete minikube
-#          command: |
-#            make minikube-clean
+  k8s:
+    machine:
+      image: circleci/classic:201808-01
+    steps:
+      - checkout
+      - run:
+          name: install minikube and kubectl
+          command: make minikube-install
+      - run:
+          name: run minikube
+          command: make minikube-run
+      - run:
+          name: run zookeeper tests
+          command: make minikube-test
+      - run:
+          name: delete minikube
+          command: make minikube-clean
 #  openshift:
 #    machine: true
 #    steps:
@@ -88,12 +81,12 @@ workflows:
         filters:
           branches:
             only: master
-#    - k8s:
-#        requires:
-#        - docker
-#        filters:
-#          branches:
-#            only: master
+    - k8s:
+        requires:
+        - docker
+        filters:
+          branches:
+            only: master
 #    - openshift:
 #        requires:
 #        - docker
