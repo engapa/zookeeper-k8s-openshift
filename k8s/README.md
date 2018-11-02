@@ -5,7 +5,7 @@ Here we have some examples of resources that may be deployed on your kubernetes 
 ## Requirements
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) (kubernetes client, 1.10 \>=)
-- Kubernetes (1.10 \>=)
+- Kubernetes (1.10)
 
 ## Launch a cluster
 
