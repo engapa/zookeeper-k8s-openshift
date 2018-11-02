@@ -58,7 +58,7 @@ minikube-clean: ## Remove minikube
 	@k8s/main.sh clean
 
 .PHONY: minishift-install
-minishift: ## Install minishift and oc
+minishift-install: ## Install minishift and oc
 	@openshift/main.sh minishift-install
 	@openshift/main.sh oc-install
 

@@ -2,7 +2,7 @@
 
 set -e
 
-MINIKUBE_VERSION=${MINIKUBE_VERSION:-"v0.80.0"}
+MINIKUBE_VERSION=${MINIKUBE_VERSION:-"v0.30.0"}
 KUBE_VERSION=${KUBE_VERSION:-"v1.11.3"}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -17,7 +17,7 @@ function kubectl-install()
   fi
 
   # Download kubectl
-  curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/${KUBE_VERSION}/bin/$DISTRO/amd64/kubectl
+  curl -L -o kubectl https://storage.googleapis.com/kubernetes-release/release/${KUBE_VERSION}/bin/$DISTRO/amd64/kubectl
   chmod +x kubectl
   sudo mv kubectl /usr/local/bin/
   mkdir -p ${HOME}/.kube
@@ -28,7 +28,7 @@ function kubectl-install()
 function minikube-install()
 {
   # Download minikube
-  curl -Lo minikube https://storage.googleapis.com/minikube/releases/${MINIKUBE_VERSION}/minikube-$DISTRO-amd64
+  curl -L -o minikube https://storage.googleapis.com/minikube/releases/${MINIKUBE_VERSION}/minikube-$DISTRO-amd64
   chmod +x minikube
   sudo mv minikube /usr/local/bin/
 
@@ -43,7 +43,7 @@ function minikube-run()
   export CHANGE_MINIKUBE_NONE_USER=true
   export KUBECONFIG=$HOME/.kube/config
 
-  sudo -E minikube start --vm-driver=none --cpus 2 --memory 2048 --kubernetes-version=${KUBE_VERSION} &> $HOME/minikube.log 2>&1 < /dev/null
+  sudo -E minikube start --vm-driver=none --cpus 2 --memory 2048 --kubernetes-version=${KUBE_VERSION}
 
   # this for loop waits until kubectl can access the api server that Minikube has created
   for i in {1..150}; do # timeout for 5 minutes
@@ -111,7 +111,7 @@ function test-all()
 function clean() # Destroy minikube vm
 {
   echo "Cleaning ...."
-  minikube delete
+  sudo minikube delete
 }
 
 function help() # Show a list of functions
