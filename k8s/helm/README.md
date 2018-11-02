@@ -11,15 +11,15 @@
 To install the chart with the release name `zookeeper-<release>` in the default
 namespace:
 
-```sh
+```bash
 $ helm repo add engapa http://storage.googleapis.com/kubernetes-charts-incubator
 $ helm install --name zookeeper-3.4.13 engapa/zookeeper
 ```
 
-If using a dedicated namespace (recommended) then make sure the namespace
-exists with:
+If you're using a dedicated namespace (recommended) then make sure the namespace
+exists:
 
-```sh
+```bash
 $ kubectl create ns zookeeper
 $ helm install --name zookeeper-3.4.13 --set global.namespace=zookeeper engapa/zookeeper
 ```
