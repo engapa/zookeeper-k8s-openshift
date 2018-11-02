@@ -40,10 +40,10 @@ docker-test: docker-run ## Test for docker container
 docker-push: ## Publish docker images
 	@docker push $(DOCKER_ORG)/$(DOCKER_IMAGE):$(ZK_VERSION)
 
-.PHONY: minikube
-minikube: ## Install minikube and kubectl
-	@k8s/main.sh minikube
-	@k8s/main.sh kubectl
+.PHONY: minikube-install
+minikube-install: ## Install minikube and kubectl
+	@k8s/main.sh minikube-install
+	@k8s/main.sh kubectl-install
 
 .PHONY: minikube-run
 minikube-run: ## Run minikube
@@ -51,16 +51,16 @@ minikube-run: ## Run minikube
 
 .PHONY: minikube-test
 minikube-test: ## Launch tests on minikube
-	@k8s/main.sh test-all
+	@k8s/main.sh test
 
 .PHONY: minikube-clean
 minikube-clean: ## Remove minikube
 	@k8s/main.sh clean
 
-.PHONY: minishift
+.PHONY: minishift-install
 minishift: ## Install minishift and oc
-	@openshift/main.sh minishift
-	@openshift/main.sh oc
+	@openshift/main.sh minishift-install
+	@openshift/main.sh oc-install
 
 .PHONY: minishift-run
 minishift-run: ## Run minishift
@@ -68,7 +68,7 @@ minishift-run: ## Run minishift
 
 .PHONY: minishift-test
 minishift-test: ## Launch tests on minishift
-	@openshift/main.sh test-all
+	@openshift/main.sh test
 
 .PHONY: minishift-clean
 minishift-clean: ## Remove minishift
