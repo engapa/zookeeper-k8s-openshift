@@ -24,15 +24,17 @@ function oc-install()
 function oc-cluster-run()
 {
 
-  sudo vi
-  sudo reload
-  sudo restart
+  # Add internal insecure registry
+  sed -i 's#^ExecStart=.*#ExecStart=/usr/bin/dockerd --insecure-registry='172.30.0.0/16' -H fd://#' /lib/systemd/system/docker.service
+  sudo systemctl daemon-reload
+  sudo systemctl restart docker
 
+  # Run openshift cluster
   oc cluster up --enable=[*]
 
-  # Waiting for Minikube
+  # Waiting for cluster
   for i in {1..150}; do # timeout for 5 minutes
-     oc version &> /dev/null
+     oc cluster status &> /dev/null
      if [ $? -ne 1 ]; then
         break
     fi
@@ -40,6 +42,7 @@ function oc-cluster-run()
   done
 
   oc create -f $DIR/zk.yaml
+  oc create -f $DIR/zk-persistent.yaml
 
 }
 
@@ -75,7 +78,7 @@ function test-persistent()
 {
   # Given
   # When
-  oc new-app zk -p ZOO_REPLICAS=1
+  oc new-app zk-persistent -p ZOO_REPLICAS=3
   # Then
   check 3
 }
