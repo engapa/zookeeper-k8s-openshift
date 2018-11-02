@@ -25,7 +25,7 @@ function oc-cluster-run()
 {
 
   # Add internal insecure registry
-  sed -i 's#^ExecStart=.*#ExecStart=/usr/bin/dockerd --insecure-registry='172.30.0.0/16' -H fd://#' /lib/systemd/system/docker.service
+  sudo sed -i 's#^ExecStart=.*#ExecStart=/usr/bin/dockerd --insecure-registry='172.30.0.0/16' -H fd://#' /lib/systemd/system/docker.service
   sudo systemctl daemon-reload
   sudo systemctl restart docker
 
