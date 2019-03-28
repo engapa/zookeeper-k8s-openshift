@@ -4,8 +4,8 @@ Here we have some examples of resources that may be deployed on your kubernetes 
 
 ## Requirements
 
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) (kubernetes client, 1.10 \>=)
-- Kubernetes (1.10)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- Kubernetes (tested with version 1.13)
 
 ## Launch a cluster
 
@@ -14,12 +14,6 @@ Adjust the contents of file `zk.yaml` file and type next command to create a zoo
 ```bash
 $ kubectl create -f zk.yaml
 ```
-
-## Use a helm chart
-
-As you know Helm is a tool for managing kubernetes charts.
-
-[Here](helm) you can find all details to install the zookeeper chart.
 
 ## Local environment
 

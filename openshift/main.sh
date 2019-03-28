@@ -5,8 +5,6 @@ set -e
 ZK_VERSION=${ZK_VERSION:-"3.4.13"}
 ZK_IMAGE="engapa/zookeeper:${ZK_VERSION}"
 
-MINISHIFT_VERSION=${MINISHIFT_VERSION:-"v1.26.1"}
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
@@ -67,26 +65,29 @@ function check()
 function test()
 {
   # Given
+  ZOO_REPLICAS=$1
   # When
-  oc new-app zk -p ZOO_REPLICAS=1
+  oc new-app zk -p ZOO_REPLICAS=$ZOO_REPLICAS
   # Then
-  check 1
+  check $ZOO_REPLICAS
 
 }
 
 function test-persistent()
 {
   # Given
+  ZOO_REPLICAS=$1
   # When
-  oc new-app zk-persistent -p ZOO_REPLICAS=3
+  oc new-app zk-persistent -p ZOO_REPLICAS=$ZOO_REPLICAS
   # Then
-  check 3
+  check $ZOO_REPLICAS
 }
 
 function test-all()
 {
-  test && oc delete -l component=zk -l zk-name=zk all,pv,pvc,statefulset
-  test-persistent && oc delete -l component=zk -l zk-name=zk all,pv,pvc,statefulset
+  ZOO_REPLICAS=$1
+  test $ZOO_REPLICAS && oc delete -l component=zk -l zk-name=zk all,pv,pvc,statefulset
+  test-persistent $ZOO_REPLICAS && oc delete -l component=zk -l zk-name=zk all,pv,pvc,statefulset
 }
 
 function oc-cluster-clean()

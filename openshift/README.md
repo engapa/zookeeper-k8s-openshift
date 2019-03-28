@@ -8,8 +8,8 @@ It isn't necessary to clone this repo, you can use directly resource URLs.
 
 ## Requirements
 
-- [oc](https://github.com/openshift/origin/releases) (openshift client, 3.10 \>=)
-- Openshift cluster (3.10 \>=)
+- [oc](https://github.com/openshift/origin/releases) (v3.11)
+- [minihift](https://github.com/minishift/minishift) (v1.33.0)
 
 ### DEV environment
 
@@ -19,12 +19,9 @@ We'll use only opensource, that is 'openshift origin'.
 After install the command client check everything is alright to continue:
 
 ```bash
-[$ minishift update]
 $ minishift version
-minishift v1.26.1+1e20f27
+minishift v1.33.0+ba29431
 $ minishift start [options]
-...
-Version: v3.11.0
 ...
 $ minishift openshift version
 openshift v3.11.0+57f8760-31
@@ -74,7 +71,7 @@ For production environments we'll use zookeeper deployments with persistence (zk
 We recommend you to use **zk-persistent.yaml**.
 This means that although pods are destroyed all data are safe under persistent volumes, and when pod are recreated the volumes will be attached again.
 
-The statefulset object has an "antiaffinity" pod scheduler policy so pods will be allocated in separate nodes.
+The statefulset object has an "antiaffinity" pod scheduler policy so pods will be allocated on separated nodes.
 It's required the same number of nodes that the value of parameter `ZOO_REPLICAS`.
 
 ## Building the image

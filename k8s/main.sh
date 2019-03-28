@@ -2,8 +2,8 @@
 
 set -e
 
-MINIKUBE_VERSION=${MINIKUBE_VERSION:-"v0.30.0"}
-KUBE_VERSION=${KUBE_VERSION:-"v1.10.0"}
+MINIKUBE_VERSION=${MINIKUBE_VERSION:-"v0.35.0"}
+KUBE_VERSION=${KUBE_VERSION:-"v1.13.0"}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -67,7 +67,7 @@ function minikube-run()
 function check()
 {
   SLEEP_TIME=10
-  MAX_ATTEMPTS=10
+  MAX_ATTEMPTS=20
   ATTEMPTS=0
   JSONPATH_STSETS=
   until [ "$(kubectl get -f $1 -o jsonpath='{.items[?(@.kind=="StatefulSet")].status.readyReplicas}' 2>&1)" == "$2" ]; do
@@ -88,7 +88,7 @@ function test()
   # When
   kubectl create -f $file
   # Then
-  check $file 1
+  check $file 3
 
 }
 

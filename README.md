@@ -6,9 +6,9 @@
 [![Docker image version](https://images.microbadger.com/badges/version/engapa/zookeeper.svg)](https://microbadger.com/images/engapa/zookeeper)
 ![OSS](https://badges.frapsoft.com/os/v1/open-source.svg?v=103 "We love OpenSource")
 
-The aim of this project is provide optimised zookeeper docker images to run into 'statefulsets' on kubernetes.
+This project aims to provide docker images and prepare them to be deployed as 'statefulsets' on kubernetes.
 
-These are the main scripts used to build/run the docker image/container:
+These scripts are used to build/run the docker image/container:
 
 * **zk_env.sh**: Export needed env variable for other scripts.
 * **zk_download.sh**: is used to download the suitable release of zookeeper (version `ZOO_VERSION`).
@@ -57,7 +57,7 @@ $ docker run -it -d --name zk -e "SETUP_DEBUG=true" -e "LOG4J_zookeeper_root_log
 
 Also you may use `--env-file` option to load these variables from a file.
 
-And, of course, you could provide your own properties files directly by option `-v` and don't use `zk_setup.sh` script.
+And, of course, you could provide your own properties files directly through volumes by option `-v` and without using the `zk_setup.sh` script.
 
 ## k8s
 
