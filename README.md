@@ -6,7 +6,7 @@
 [![Docker image version](https://images.microbadger.com/badges/version/engapa/zookeeper.svg)](https://microbadger.com/images/engapa/zookeeper)
 ![OSS](https://badges.frapsoft.com/os/v1/open-source.svg?v=103 "We love OpenSource")
 
-This project aims to provide docker images and prepare them to be deployed as 'statefulsets' on kubernetes.
+This project aims to provide zookeeper docker images and prepare them to be deployed as 'statefulsets' on kubernetes.
 
 These scripts are used to build/run the docker image/container:
 
