@@ -1,0 +1,88 @@
+version: 2
+jobs:
+  docker:
+    docker:
+    - image: docker
+    steps:
+    - setup_remote_docker:
+        docker_layer_caching: true
+    - checkout
+    - run:
+        name: Docker login
+        command: |
+          docker login -u=${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+    - run:
+        name: Install essentials
+        command: |
+          apk add --no-cache --virtual .build-deps make gcc
+    - run:
+        name: build docker image
+        command: |
+          make docker-build
+    - run:
+        name: test of docker image
+        command: |
+          make docker-test
+    - run:
+        name: publish docker image
+        command: |
+          make docker-push
+          if [ "$CIRCLE_BRANCH" == "master" ]; then
+              docker build -t ${DOCKER_USERNAME}/zookeeper:latest .;
+              docker push ${DOCKER_USERNAME}/zookeeper:latest;
+          fi
+  k8s:
+    machine:
+      image: circleci/classic:201808-01
+    steps:
+      - checkout
+      - run:
+          name: install minikube and kubectl
+          command: make minikube-install
+      - run:
+          name: run minikube
+          command: make minikube-run
+      - run:
+          name: run zookeeper tests
+          command: make minikube-test
+      - run:
+          name: delete minikube
+          command: make minikube-clean
+  openshift:
+    machine:
+      image: circleci/classic:201808-01
+    steps:
+      - checkout
+      - run:
+          name: install oc
+          command: make oc-install
+      - run:
+          name: run local openshift cluster
+          command: make oc-cluster-run
+      - run:
+          name: run zookeeper tests
+          command: make oc-cluster-test
+      - run:
+          name: delete local openshift cluster
+          command: make oc-cluster-clean
+
+workflows:
+  version: 2
+  build:
+    jobs:
+    - docker:
+        filters:
+          branches:
+            only: master
+    - k8s:
+        requires:
+        - docker
+        filters:
+          branches:
+            only: master
+    - openshift:
+        requires:
+        - docker
+        filters:
+          branches:
+            only: master

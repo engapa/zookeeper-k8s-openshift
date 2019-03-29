@@ -1,5 +1,10 @@
 .*
-!.travis.yml
+!.circleci
 !.helmignore
 !.dockerignore
 !.gitignore
+
+minikube
+minishift
+kubectl
+oc
