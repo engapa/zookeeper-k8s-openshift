@@ -76,7 +76,3 @@ In [openshift directory](openshift) you can find some Openshift templates.
 ## Author
 
 Enrique Garcia **engapa@gmail.com**
-
-
-## License
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fengapa%2Fzookeeper-k8s-openshift.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fengapa%2Fzookeeper-k8s-openshift?ref=badge_large)
