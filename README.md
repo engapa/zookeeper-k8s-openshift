@@ -1,6 +1,6 @@
 # Zookeeper Docker Image
 [![Build status](https://circleci.com/gh/engapa/zookeeper-k8s-openshift/tree/master.svg?style=svg "Build status")](https://circleci.com/gh/engapa/zookeeper-k8s-openshift/tree/master)
-[![License status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fengapa%2Fzookeeper-k8s-openshift.svg?type=shield "License status")](https://app.fossa.io/projects/git%2Bgithub.com%2Fengapa%2Fzookeeper-k8s-openshift?ref=badge_shield)
+[![License status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fengapa%2Fzookeeper-k8s-openshift.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fengapa%2Fzookeeper-k8s-openshift?ref=badge_shield)
 [![Docker Pulls](https://img.shields.io/docker/pulls/engapa/zookeeper.svg)](https://hub.docker.com/r/engapa/zookeeper/)
 [![Docker Layering](https://images.microbadger.com/badges/image/engapa/zookeeper.svg)](https://microbadger.com/images/engapa/zookeeper)
 [![Docker image version](https://images.microbadger.com/badges/version/engapa/zookeeper.svg)](https://microbadger.com/images/engapa/zookeeper)
@@ -76,3 +76,7 @@ In [openshift directory](openshift) you can find some Openshift templates.
 ## Author
 
 Enrique Garcia **engapa@gmail.com**
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fengapa%2Fzookeeper-k8s-openshift.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fengapa%2Fzookeeper-k8s-openshift?ref=badge_large)
