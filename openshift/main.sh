@@ -39,6 +39,7 @@ function oc-cluster-run()
     sleep 2
   done
 
+  oc login -u system:admin
   oc create -f $DIR/zk.yaml
   oc create -f $DIR/zk-persistent.yaml
 
@@ -51,7 +52,7 @@ function check()
   SLEEP_TIME=10
   MAX_ATTEMPTS=10
   ATTEMPTS=0
-  until [ "$(oc get statefulset -l zk-name=zk -o jsonpath='{.items[?(@.kind=="StatefulSet")].status.currentReplicas}' 2>&1)" == "$2" ]; do
+  until [ "$(oc get statefulset -l zk-name=$1 -o jsonpath='{.items[?(@.kind=="StatefulSet")].status.currentReplicas}' 2>&1)" == "$2" ]; do
     sleep $SLEEP_TIME
     ATTEMPTS=`expr $ATTEMPTS + 1`
     if [[ $ATTEMPTS -gt $MAX_ATTEMPTS ]]; then
@@ -65,22 +66,56 @@ function check()
 function test()
 {
   # Given
-  ZOO_REPLICAS=$1
+  ZOO_REPLICAS=${1:-1}
   # When
-  oc new-app zk -p ZOO_REPLICAS=$ZOO_REPLICAS
+  oc new-app zk -p ZOO_REPLICAS=${ZOO_REPLICAS}
   # Then
-  check $ZOO_REPLICAS
+  check zk ${ZOO_REPLICAS}
 
 }
 
 function test-persistent()
 {
   # Given
-  ZOO_REPLICAS=$1
+  ZOO_REPLICAS=${1:-1}
+  for i in $(seq 1 ${ZOO_REPLICAS});do
+  cat << PV | oc create -f -
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ component: zk
+ name: zk-persistent-data-disk-$i
+ contents: data
+spec:
+ capacity:
+  storage: 1Gi
+ accessModes:
+  - ReadWriteOnce
+ storageClassName: anything
+ hostPath:
+  path: /tmp/oc/zk-persistent-data-disk-$i
+PV
+  cat << PV | oc create -f -
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ component: zk
+ name: zk-persistent-datalog-disk-$i
+ contents: datalog
+spec:
+ capacity:
+  storage: 1Gi
+ accessModes:
+  - ReadWriteOnce
+ storageClassName: anything
+ hostPath:
+  path: /tmp/oc/zk-persistent-datalog-disk-$i
+PV
+  done
   # When
   oc new-app zk-persistent -p ZOO_REPLICAS=$ZOO_REPLICAS
   # Then
-  check $ZOO_REPLICAS
+  check zk-persistent $ZOO_REPLICAS
 }
 
 function test-all()

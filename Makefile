@@ -73,7 +73,7 @@ oc-cluster-test: ## Launch tests on our local openshift cluster
 .PHONY: oc-cluster-test-persistent
 oc-cluster-test-persistent: ## Launch tests on our local openshift cluster with persistence
 	# Test with 3 replicas
-	@openshift/main.sh test-persistent 3
+	@openshift/main.sh test-persistent 1
 
 .PHONY: oc-cluster-test-all
 oc-cluster-test-all: ## Launch tests on our local openshift cluster w/o persistence

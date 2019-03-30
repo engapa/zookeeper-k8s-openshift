@@ -63,6 +63,9 @@ jobs:
           name: run zookeeper tests
           command: make oc-cluster-test
       - run:
+          name: run zookeeper persistent tests
+          command: make oc-cluster-test-persistent
+      - run:
           name: delete local openshift cluster
           command: make oc-cluster-clean
 
