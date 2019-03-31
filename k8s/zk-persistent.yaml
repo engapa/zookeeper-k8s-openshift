@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: zk-svc
   labels:
-    zk-name: zk
+    zk-name: zk-persistent
     component: zk
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
@@ -17,14 +17,14 @@ spec:
     name: zkleader
   clusterIP: None
   selector:
-    zk-name: zk
+    zk-name: zk-persistent
 ---
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
-  name: zk
+  name: zk-persistent
   labels:
-    zk-name: zk
+    zk-name: zk-persistent
     component: zk
 spec:
   serviceName: "zk-svc"
@@ -32,7 +32,7 @@ spec:
   template:
     metadata:
       labels:
-        zk-name: zk
+        zk-name: zk-persistent
         component: zk
 #  annotations:
 ## Use this annotation if you want allocate each pod on different node
@@ -57,7 +57,7 @@ spec:
         runAsUser: 1000
         fsGroup: 1000
       containers:
-      - name: zk
+      - name: zk-persistent
         imagePullPolicy: IfNotPresent
         image: engapa/zookeeper:3.4.13
         resources:
