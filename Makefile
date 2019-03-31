@@ -54,7 +54,7 @@ minikube-test: ## Launch tests on minikube
 	@k8s/main.sh test
 
 .PHONY: minikube-test-persistent
-minikube-test: ## Launch tests on minikube with persistent volumes
+minikube-test-persistent: ## Launch tests on minikube with persistent volumes
 	@k8s/main.sh test-persistent
 
 .PHONY: minikube-clean
