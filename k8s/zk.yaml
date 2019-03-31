@@ -39,25 +39,34 @@ spec:
       - name: zk
         imagePullPolicy: IfNotPresent
         image: engapa/zookeeper:3.4.13
+        resources:
+          requests:
+            memory: 512M
+            cpu: 300m
+          limits:
+            memory: 512M
+            cpu: 300m
         ports:
-        - containerPort: 2181
-          name: zkclient
-        - containerPort: 2888
-          name: zkserver
-        - containerPort: 3888
-          name: zkleader
+          - containerPort: 2181
+            name: zkclient
+          - containerPort: 2888
+            name: zkserver
+          - containerPort: 3888
+            name: zkleader
         env:
-        - name: ZOO_REPLICAS
-          value: "3"
+          - name: ZOO_REPLICAS
+            value: "3"
+          - name: JAVA_ZK_JVMFLAG
+            value: "\"-Xmx512M -Xms512M\""
         readinessProbe:
           exec:
             command:
-            - zk_status.sh
-          initialDelaySeconds: 15
-          timeoutSeconds: 5
+              - zk_status.sh
+          initialDelaySeconds: 20
+          timeoutSeconds: 10
         livenessProbe:
           exec:
             command:
-            - zk_status.sh
-          initialDelaySeconds: 15
-          timeoutSeconds: 5
+              - zk_status.sh
+          initialDelaySeconds: 20
+          timeoutSeconds: 10

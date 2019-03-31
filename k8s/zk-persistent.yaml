@@ -62,11 +62,11 @@ spec:
         image: engapa/zookeeper:3.4.13
         resources:
           requests:
-            memory: 1Gi
-            cpu: 1
+            memory: 512M
+            cpu: 300m
           limits:
-            memory: 1Gi
-            cpu: 1
+            memory: 512M
+            cpu: 300m
         ports:
         - containerPort: 2181
           name: zkclient
@@ -78,7 +78,7 @@ spec:
         - name: ZOO_REPLICAS
           value: "3"
         - name: JAVA_ZK_JVMFLAG
-          value: "\"-Xmx1G -Xms1G\""
+          value: "\"-Xmx512M -Xms512M\""
         readinessProbe:
           exec:
             command:
