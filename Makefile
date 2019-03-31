@@ -58,8 +58,11 @@ minikube-test-persistent: ## Launch tests on minikube with persistent volumes
 	@k8s/main.sh test-persistent
 
 .PHONY: minikube-clean
-minikube-clean: ## Remove minikube
+minikube-clean: ## Remove kubernetes resources
 	@k8s/main.sh clean-all
+
+.PHONY: minikube-delete
+minikube-delete: ## Remove minikube cluster
 	@k8s/main.sh minikube-delete
 
 .PHONY: oc-install
