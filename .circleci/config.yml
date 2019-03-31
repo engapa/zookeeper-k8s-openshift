@@ -46,6 +46,9 @@ jobs:
           name: run zookeeper tests
           command: make minikube-test
       - run:
+          name: run zookeeper tests persistent
+          command: make minikube-test-persistent
+      - run:
           name: delete minikube
           command: make minikube-clean
   openshift:

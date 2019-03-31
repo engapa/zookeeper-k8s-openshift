@@ -67,18 +67,19 @@ function minikube-run()
 function check()
 {
   SLEEP_TIME=10
-  MAX_ATTEMPTS=20
+  MAX_ATTEMPTS=50
   ATTEMPTS=0
   JSONPATH_STSETS=
-  until [ "$(kubectl get -f $1 -o jsonpath='{.items[?(@.kind=="StatefulSet")].status.readyReplicas}' 2>&1)" == "$2" ]; do
+  until [[ "$(kubectl get -f $1 -o jsonpath='{.items[?(@.kind=="StatefulSet")].status.readyReplicas}' 2>&1)" == "$2" ]]; do
     sleep $SLEEP_TIME
     ATTEMPTS=`expr $ATTEMPTS + 1`
     if [[ $ATTEMPTS -gt $MAX_ATTEMPTS ]]; then
       echo "ERROR: Max number of attempts was reached (${MAX_ATTEMPTS})"
       exit 1
     fi
-   echo "Retry [${ATTEMPTS}] ... "
+   echo "Retry [${ATTEMPTS}/${MAX_ATTEMPTS}] ... "
   done
+  kubectl get all
 }
 
 function test()
@@ -94,32 +95,40 @@ function test()
 
 function test-persistent()
 {
-  # Given
+  # Given, 3 replicas
   file=$DIR/zk-persistent.yaml
   # When
   kubectl create -f $file
   # Then
-  check file 3
+  check $file 3
+
+  kubectl get pvc,pv
 }
 
 function test-all()
 {
-  test && kubectl delete --force=true -l component=zk -l app=zk all
-  test-persistent && kubectl delete --force=true -l component=zk -l app=zk all,pv,pvc
+  test && kubectl delete -l component=zk all
+  test-persistent && kubectl delete -l component=zk all,pv,pvc
 }
 
-function clean() # Destroy minikube vm
+function clean-all() # Destroy minikube vm
 {
-  echo "Cleaning ...."
-  sudo minikube delete
+  echo "Cleaning resources ...."
+  kubectl delete -l component=zk all,pv,pvc
 }
 
+function minikube-delete(){
+
+  echo "Deleting minikube cluster ...."
+  minikube delete
+
+}
 function help() # Show a list of functions
 {
     declare -F -p | cut -d " " -f 3
 }
 
-if [ "_$1" = "_" ]; then
+if [[ "_$1" = "_" ]]; then
     help
 else
     "$@"

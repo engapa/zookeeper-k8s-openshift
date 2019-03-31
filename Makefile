@@ -53,9 +53,14 @@ minikube-run: ## Run minikube
 minikube-test: ## Launch tests on minikube
 	@k8s/main.sh test
 
+.PHONY: minikube-test-persistent
+minikube-test: ## Launch tests on minikube with persistent volumes
+	@k8s/main.sh test-persistent
+
 .PHONY: minikube-clean
 minikube-clean: ## Remove minikube
-	@k8s/main.sh clean
+	@k8s/main.sh clean-all
+	@k8s/main.sh minikube-delete
 
 .PHONY: oc-install
 oc-install: ## Install oc tools
@@ -73,12 +78,7 @@ oc-cluster-test: ## Launch tests on our local openshift cluster
 .PHONY: oc-cluster-test-persistent
 oc-cluster-test-persistent: ## Launch tests on our local openshift cluster with persistence
 	# Test with 3 replicas
-	@openshift/main.sh test-persistent 1
-
-.PHONY: oc-cluster-test-all
-oc-cluster-test-all: ## Launch tests on our local openshift cluster w/o persistence
-	# Test with 3 replicas
-	@openshift/main.sh test-all 3
+	@openshift/main.sh test-persistent 3
 
 .PHONY: oc-cluster-clean
 oc-cluster-clean: ## Remove openshift cluster
