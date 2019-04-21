@@ -2,7 +2,7 @@
 
 set -e
 
-ZK_VERSION=${ZK_VERSION:-"3.4.13"}
+ZK_VERSION=${ZK_VERSION:-"3.4.14"}
 ZK_IMAGE="engapa/zookeeper:${ZK_VERSION}"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -33,7 +33,7 @@ function oc-cluster-run()
   # Waiting for cluster
   for i in {1..150}; do # timeout for 5 minutes
      oc cluster status &> /dev/null
-     if [ $? -ne 1 ]; then
+     if [[ $? -ne 1 ]]; then
         break
     fi
     sleep 2
@@ -50,17 +50,18 @@ function check()
 {
 
   SLEEP_TIME=10
-  MAX_ATTEMPTS=10
+  MAX_ATTEMPTS=50
   ATTEMPTS=0
-  until [ "$(oc get statefulset -l zk-name=$1 -o jsonpath='{.items[?(@.kind=="StatefulSet")].status.currentReplicas}' 2>&1)" == "$2" ]; do
+  until [[ "$(oc get statefulset -l component=zk -o jsonpath='{.items[?(@.kind=="StatefulSet")].status.currentReplicas}' 2>&1)" == "$1" ]]; do
     sleep $SLEEP_TIME
     ATTEMPTS=`expr $ATTEMPTS + 1`
     if [[ $ATTEMPTS -gt $MAX_ATTEMPTS ]]; then
       echo "ERROR: Max number of attempts was reached (${MAX_ATTEMPTS})"
       exit 1
     fi
-   echo "Retry [${ATTEMPTS}] ... "
+   echo "Retry [${ATTEMPTS}/${MAX_ATTEMPTS}] ... "
   done
+  oc get all
 }
 
 function test()
@@ -68,7 +69,7 @@ function test()
   # Given
   ZOO_REPLICAS=${1:-1}
   # When
-  oc new-app zk -p ZOO_REPLICAS=${ZOO_REPLICAS}
+  oc new-app zk -p ZOO_REPLICAS=${ZOO_REPLICAS} -p SOURCE_IMAGE="engapa/zookeeper"
   # Then
   check zk ${ZOO_REPLICAS}
 
@@ -83,46 +84,54 @@ function test-persistent()
 apiVersion: v1
 kind: PersistentVolume
 metadata:
- component: zk
  name: zk-persistent-data-disk-$i
  contents: data
+ labels:
+   component: zk
 spec:
  capacity:
   storage: 1Gi
  accessModes:
   - ReadWriteOnce
- storageClassName: anything
  hostPath:
   path: /tmp/oc/zk-persistent-data-disk-$i
 PV
-  cat << PV | oc create -f -
+  cat << PVLOG | oc create -f -
 apiVersion: v1
 kind: PersistentVolume
 metadata:
- component: zk
  name: zk-persistent-datalog-disk-$i
  contents: datalog
+ labels:
+   component: zk
 spec:
  capacity:
   storage: 1Gi
  accessModes:
   - ReadWriteOnce
- storageClassName: anything
  hostPath:
   path: /tmp/oc/zk-persistent-datalog-disk-$i
-PV
+PVLOG
   done
   # When
-  oc new-app zk-persistent -p ZOO_REPLICAS=$ZOO_REPLICAS
+  oc new-app zk-persistent -p ZOO_REPLICAS=${ZOO_REPLICAS} -p SOURCE_IMAGE="engapa/zookeeper"
   # Then
-  check zk-persistent $ZOO_REPLICAS
+  check ${ZOO_REPLICAS}
+  oc get pv,pvc
+
 }
 
 function test-all()
 {
   ZOO_REPLICAS=$1
-  test $ZOO_REPLICAS && oc delete -l component=zk -l zk-name=zk all,pv,pvc,statefulset
-  test-persistent $ZOO_REPLICAS && oc delete -l component=zk -l zk-name=zk all,pv,pvc,statefulset
+  test $ZOO_REPLICAS && oc delete -l component=zk all
+  test-persistent $ZOO_REPLICAS && oc delete -l component=zk all,pv,pvc
+}
+
+function clean-resources()
+{
+  echo "Cleaning resources ...."
+  oc delete -l component=zk all,pv,pvc
 }
 
 function oc-cluster-clean()
@@ -136,7 +145,7 @@ function help() # Show a list of functions
     declare -F -p | cut -d " " -f 3
 }
 
-if [ "_$1" = "_" ]; then
+if [[ "_$1" = "_" ]]; then
     help
 else
     "$@"

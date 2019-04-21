@@ -3,13 +3,7 @@
 DOCKER_ORG           ?= engapa
 DOCKER_IMAGE         ?= zookeeper
 
-ZK_VERSION           ?= 3.4.13
-
-KUBE_VERSION         ?= v1.11.3
-MINIKUBE_VERSION     ?= v0.30.0
-
-OC_VERSION           ?= v3.11.0
-MINISHIFT_VERSION    ?= v1.26.1
+ZK_VERSION           ?= 3.4.14
 
 .PHONY: help
 help: ## Show this help
@@ -77,6 +71,10 @@ oc-cluster-run: ## Run a cluster through oc command
 oc-cluster-test: ## Launch tests on our local openshift cluster
 	# Test with 3 replicas
 	@openshift/main.sh test 3
+
+.PHONY: oc-clean-resources
+oc-clean-resources: ## Clean zk resources
+	@openshift/main.sh clean-resources
 
 .PHONY: oc-cluster-test-persistent
 oc-cluster-test-persistent: ## Launch tests on our local openshift cluster with persistence

@@ -5,7 +5,7 @@ MAINTAINER Enrique Garcia <engapa@gmail.com>
 ARG ZOO_HOME=/opt/zookeeper
 ARG ZOO_USER=zookeeper
 ARG ZOO_GROUP=zookeeper
-ARG ZOO_VERSION="3.4.13"
+ARG ZOO_VERSION="3.4.14"
 
 ENV ZOO_HOME=$ZOO_HOME \
     ZOO_VERSION=$ZOO_VERSION \
@@ -34,12 +34,13 @@ RUN set -ex \
 ADD zk_env.sh zk_setup.sh zk_status.sh $ZOO_HOME/bin/
 
 RUN set -ex; \
-    chmod a+x $ZOO_HOME/bin/zk_*.sh; \
-    addgroup $ZOO_GROUP; \
-    addgroup sudo; \
-    adduser -h $ZOO_HOME -g "Zookeeper user" -s /sbin/nologin -D -G $ZOO_GROUP -G sudo $ZOO_USER; \
-    chown -R $ZOO_USER:$ZOO_GROUP $ZOO_HOME; \
-    ln -s $ZOO_HOME/bin/zk_*.sh /usr/bin
+    addgroup --gid 10001 $ZOO_GROUP && \
+    adduser -h $ZOO_HOME -g "zookeeper" -s /sbin/nologin -D -G $ZOO_GROUP --uid 10001 $ZOO_USER && \
+    chown -R $ZOO_USER:$ZOO_GROUP $ZOO_HOME && \
+    chmod a+x $ZOO_HOME/bin/* && \
+    chmod -R a+w $ZOO_HOME && \
+    ln -s $ZOO_HOME/bin/zk_*.sh /usr/bin && \
+    echo "${ZOO_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 USER $ZOO_USER
 WORKDIR $ZOO_HOME/bin/

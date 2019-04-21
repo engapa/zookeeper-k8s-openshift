@@ -69,6 +69,9 @@ jobs:
           name: run zookeeper tests
           command: make oc-cluster-test
       - run:
+          name: clean resources
+          command: make oc-clean-resources
+      - run:
           name: run zookeeper persistent tests
           command: make oc-cluster-test-persistent
       - run:

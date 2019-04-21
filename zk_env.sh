@@ -21,7 +21,7 @@ function zk_local_cluster() {
 HOST=`hostname -s`
 DOMAIN=`hostname -d`
 
-if [ $ZOO_REPLICAS -gt 1 ];then
+if [[ $ZOO_REPLICAS -gt 1 ]];then
   if [[ $HOST =~ (.*)-([0-9]+)$ ]]; then
     NAME=${BASH_REMATCH[1]}
     ORD=${BASH_REMATCH[2]}
@@ -39,7 +39,7 @@ export ZK_dataLogDir=${ZK_dataLogDir:-$ZOO_HOME/data-log}
 export ZK_clientPort=${ZK_clientPort:-2181}
 
 
-# Remove invalid options per version
+# Remove invalid options of specific versions
 if ! version_gt $ZOO_VERSION "3.4.5"; then
   unset ZK_maxClientCnxns
 fi

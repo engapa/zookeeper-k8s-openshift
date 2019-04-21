@@ -49,6 +49,7 @@ objects:
   kind: ImageStream
   metadata:
     name: ${IMAGE_STREAM_NAME}
+    component: zk
   spec:
     lookupPolicy:
       local: true
@@ -57,6 +58,7 @@ objects:
   apiVersion: v1
   metadata:
     name: zk-builder
+    component: zk
   spec:
     runPolicy: Serial
     triggers:

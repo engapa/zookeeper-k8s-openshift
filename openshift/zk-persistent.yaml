@@ -7,9 +7,9 @@ metadata:
     description: Create a replicated Zookeeper server with persistent storage
     iconClass: icon-database
     tags: database,zookeeper
-labels:
-  template: zk-persistent
-  component: zk
+  labels:
+    template: zk-persistent
+    component: zk
 parameters:
 - name: NAME
   value: zk-persistent
@@ -20,7 +20,7 @@ parameters:
   required: true
 - name: ZOO_VERSION
   description: Version
-  value: "3.4.13"
+  value: "3.4.14"
   required: true
 - name: ZOO_REPLICAS
   description: Number of nodes
@@ -98,6 +98,7 @@ objects:
     name: ${NAME}
     labels:
       zk-name: ${NAME}
+      component: zk
     annotations:
       service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
   spec:
@@ -117,6 +118,7 @@ objects:
     name: ${NAME}
     labels:
       zk-name: ${NAME}
+      component: zk
   spec:
     podManagementPolicy: "Parallel"
     serviceName: ${NAME}
@@ -203,6 +205,9 @@ objects:
               - zk_status.sh
             initialDelaySeconds: 20
             timeoutSeconds: 10
+          securityContext:
+            runAsUser: 10001
+            fsGroup: 10001
           volumeMounts:
           - name: datadir
             mountPath: /opt/zookeeper/data
@@ -216,7 +221,6 @@ objects:
         resources:
           requests:
             storage: ${VOLUME_DATA_CAPACITY}
-        storageClassName: anything
         selector:
           component: zk
           contents: data
@@ -227,7 +231,6 @@ objects:
         resources:
           requests:
             storage: ${VOLUME_DATALOG_CAPACITY}
-        storageClassName: anything
         selector:
           component: zk
           contents: datalog

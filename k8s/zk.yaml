@@ -35,10 +35,13 @@ spec:
         zk-name: zk
         component: zk
     spec:
+      securityContext:
+        runAsUser: 10001
+        fsGroup: 10001
       containers:
       - name: zk
         imagePullPolicy: IfNotPresent
-        image: engapa/zookeeper:3.4.13
+        image: engapa/zookeeper:3.4.14
         resources:
           requests:
             memory: 512M

@@ -1,7 +1,7 @@
 apiVersion: v1
 description: Apache ZooKeeper enables highly reliable distributed coordination system.
 name: zookeeper
-version: 3.4.13
+version: 3.4.14
 keywords:
   - zookeeper
 home: https://zookeeper.apache.org/

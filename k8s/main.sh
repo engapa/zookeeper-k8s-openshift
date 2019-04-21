@@ -48,7 +48,7 @@ function minikube-run()
   # this for loop waits until kubectl can access the api server that Minikube has created
   for i in {1..150}; do # timeout for 5 minutes
      kubectl version &> /dev/null
-     if [ $? -ne 1 ]; then
+     if [[ $? -ne 1 ]]; then
         break
     fi
     sleep 2
@@ -111,7 +111,7 @@ function test-all()
   test-persistent && kubectl delete -l component=zk all,pv,pvc
 }
 
-function clean-all() # Destroy minikube vm
+function clean-all()
 {
   echo "Cleaning resources ...."
   kubectl delete -l component=zk all,pv,pvc
