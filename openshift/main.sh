@@ -40,7 +40,10 @@ function oc-cluster-run()
   done
 
   oc login -u system:admin
-  oc adm policy add-scc-to-group anyuid system:authenticated
+  oc create -f  $DIR/scc.yaml
+  oc adm policy add-scc-to-group zookeeper-scc system:authenticated
+  oc adm policy add-scc-to-group zookeeper-scc system:serviceaccounts:myproject
+  oc adm policy add-scc-to-group privileged system:serviceaccounts:myproject
   oc create -f $DIR/zk.yaml
   oc create -f $DIR/zk-persistent.yaml
 

@@ -1,0 +1,14 @@
+kind: SecurityContextConstraints
+apiVersion: v1
+metadata:
+  name: zookeeper-scc
+allowPrivilegedContainer: true
+allowHostDirVolumePlugin: true
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: RunAsAny
+fsGroup:
+  type: RunAsAny
+supplementalGroups:
+  type: RunAsAny
