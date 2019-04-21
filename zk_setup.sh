@@ -4,8 +4,8 @@
 
 mkdir -p $ZOO_CONF_DIR $ZK_dataDir $ZK_dataLogDir
 
-sudo chmod -R a+w $ZK_dataDir
-sudo chmod -R a+w $ZK_dataLogDir
+sudo -u zookeeper chmod -R a+w $ZK_dataDir
+sudo -u zookeeper chmod -R a+w $ZK_dataLogDir
 
 DEBUG=${SETUP_DEBUG:-false}
 LOWER=${SETUP_LOWER:-false}

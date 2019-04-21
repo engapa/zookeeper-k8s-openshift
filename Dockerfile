@@ -15,7 +15,7 @@ ENV ZOO_HOME=$ZOO_HOME \
 # Required packages
 RUN set -ex; \
     apk add --update --no-cache \
-      bash tar wget curl gnupg openssl ca-certificates
+      bash tar wget curl gnupg openssl ca-certificates sudo
 
 # Download zookeeper distribution under ZOO_HOME directory
 ADD zk_download.sh /tmp/
