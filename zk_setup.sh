@@ -2,13 +2,10 @@
 
 . $ZOO_HOME/common_functions.sh
 
-ZK_dataDir=${ZK_dataDir:-$ZOO_HOME/data}
+mkdir -p $ZOO_CONF_DIR $ZK_dataDir $ZK_dataLogDir
 
-mkdir -p $ZOO_CONF_DIR $ZK_dataDir
-
-if [[ ! -z $ZK_dataLogDir ]]; then
-  mkdir -p $ZK_dataLogDir
-fi
+sudo chmod -R a+w $ZK_dataDir
+sudo chmod -R a+w $ZK_dataLogDir
 
 DEBUG=${SETUP_DEBUG:-false}
 LOWER=${SETUP_LOWER:-false}

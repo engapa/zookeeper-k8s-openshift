@@ -72,23 +72,23 @@ parameters:
   required: true
 - name: ZOO_HEAP_SIZE
   description: JVM heap size
-  value: "-Xmx960M -Xms960M"
+  value: "-Xmx512M -Xms512M"
   required: true
 - name: RESOURCE_MEMORY_REQ
   description: The memory resource request.
-  value: "1Gi"
+  value: "512M"
   required: true
 - name: RESOURCE_MEMORY_LIMIT
   description: The limits for memory resource.
-  value: "1Gi"
+  value: "512M"
   required: true
 - name: RESOURCE_CPU_REQ
   description: The CPU resource request.
-  value: "1"
+  value: "300m"
   required: true
 - name: RESOURCE_CPU_LIMIT
   description: The limits for CPU resource.
-  value: "2"
+  value: "300m"
   required: true
 
 objects:
