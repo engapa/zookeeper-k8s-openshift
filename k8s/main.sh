@@ -69,15 +69,16 @@ function check()
   SLEEP_TIME=10
   MAX_ATTEMPTS=50
   ATTEMPTS=0
-  JSONPATH_STSETS=
-  until [[ "$(kubectl get -f $1 -o jsonpath='{.items[?(@.kind=="StatefulSet")].status.readyReplicas}' 2>&1)" == "$2" ]]; do
+  READY_REPLICAS="0"
+  until [[ "$READY_REPLICAS" == "$2" ]]; do
     sleep $SLEEP_TIME
     ATTEMPTS=`expr $ATTEMPTS + 1`
     if [[ $ATTEMPTS -gt $MAX_ATTEMPTS ]]; then
       echo "ERROR: Max number of attempts was reached (${MAX_ATTEMPTS})"
       exit 1
     fi
-   echo "Retry [${ATTEMPTS}/${MAX_ATTEMPTS}] ... "
+   READY_REPLICAS=$(kubectl get -f $1 -o jsonpath='{.items[?(@.kind=="StatefulSet")].status.readyReplicas}' 2>&1)
+   echo "[${ATTEMPTS}/${MAX_ATTEMPTS}] - Ready zookeeper replicas : ${READY_REPLICAS:-0}/$2 ... "
   done
   kubectl get all
 }

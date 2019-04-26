@@ -63,14 +63,16 @@ function check()
   SLEEP_TIME=10
   MAX_ATTEMPTS=50
   ATTEMPTS=0
-  until [[ "$(oc get statefulset -l component=zk -o jsonpath='{.items[?(@.kind=="StatefulSet")].status.currentReplicas}' 2>&1)" == "$1" ]]; do
+  READY_REPLICAS="0"
+  until [[ "$READY_REPLICAS" == "$1" ]]; do
     sleep $SLEEP_TIME
     ATTEMPTS=`expr $ATTEMPTS + 1`
     if [[ $ATTEMPTS -gt $MAX_ATTEMPTS ]]; then
       echo "ERROR: Max number of attempts was reached (${MAX_ATTEMPTS})"
       exit 1
     fi
-   echo "Retry [${ATTEMPTS}/${MAX_ATTEMPTS}] ... "
+   READY_REPLICAS=$(oc get statefulset -l component=zk -o jsonpath='{.items[?(@.kind=="StatefulSet")].status.readyReplicas}' 2>&1)
+   echo "[${ATTEMPTS}/${MAX_ATTEMPTS}] - Ready zookeeper replicas : ${READY_REPLICAS:-0}/$1 ... "
   done
   oc get all
 }
