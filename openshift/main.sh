@@ -41,11 +41,18 @@ function oc-cluster-run()
 
   oc login -u system:admin
   oc create -f  $DIR/scc.yaml
-  oc adm policy add-scc-to-group zookeeper-scc system:authenticated
   oc adm policy add-scc-to-group zookeeper-scc system:serviceaccounts:myproject
   oc adm policy add-scc-to-group privileged system:serviceaccounts:myproject
   oc create -f $DIR/zk.yaml
   oc create -f $DIR/zk-persistent.yaml
+
+}
+
+function build_local_image()
+{
+
+  oc new-build --name zk --strategy docker --binary --docker-image "openjdk:8-jre-alpine"
+  oc start-build zk --from-dir $DIR/.. --follow
 
 }
 
@@ -73,9 +80,9 @@ function test()
   # Given
   ZOO_REPLICAS=${1:-1}
   # When
-  oc new-app zk -p ZOO_REPLICAS=${ZOO_REPLICAS} -p SOURCE_IMAGE="engapa/zookeeper"
+  oc new-app --template=zk -p ZOO_REPLICAS=${ZOO_REPLICAS} -p SOURCE_IMAGE="engapa/zookeeper"
   # Then
-  check zk ${ZOO_REPLICAS}
+  check ${ZOO_REPLICAS}
 
 }
 
@@ -118,7 +125,7 @@ spec:
 PVLOG
   done
   # When
-  oc new-app zk-persistent -p ZOO_REPLICAS=${ZOO_REPLICAS} -p SOURCE_IMAGE="engapa/zookeeper"
+  oc new-app --template=zk-persistent -p ZOO_REPLICAS=${ZOO_REPLICAS} -p SOURCE_IMAGE="engapa/zookeeper"
   # Then
   check ${ZOO_REPLICAS}
   oc get pv,pvc

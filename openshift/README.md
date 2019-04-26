@@ -80,7 +80,7 @@ This is a recommended step, although you can always use the [public images at do
 
 To build and save a docker image of zookeeper in your private Openshift registry just follow these instructions:
 
-1 - Create an image builder and build the container image
+1 - Create an image builder and build the container image locally
 
 ```bash
 $ oc create -f buildconfig.yaml
@@ -93,12 +93,17 @@ If you want to get an image from another git commit:
 $ oc start-build zk-builder --commit=master
 ```
 
+Or build a local docker image from source directy:
+```bash
+./main build_local_image
+```
+
 2 - Check that image is ready:
 
 ```bash
 $ oc get is -l component=zk [-n project]
 NAME        DOCKER REPO                           TAGS      UPDATED
-zookeeper   172.30.1.1:5000/test/zookeeper       3.4.14    1 days ago
+zookeeper   172.30.1.1:5000/myproject/zookeeper       3.4.14    1 days ago
 ```
 
 **NOTE**: If you want to use this local/private image from containers on other projects then use the "\<project\>/NAME" value as `SOURCE_IMAGE` parameter value, and use one value of "TAGS" as `ZOO_VERSION` parameter value (e.g: test/zookeeper:3.4.14).
@@ -109,7 +114,7 @@ Just type next command to create a zookeeper cluster by using statefulset resour
 
 ```bash
 $ oc create -f zk[-persistent].yaml
-$ oc new-app zk -p ZOO_REPLICAS=1 -p SOURCE_IMAGE="172.30.1.1:5000/test/zookeeper" -p ZOO_VERSION="3.4.14"
+$ oc new-app zk -p ZOO_REPLICAS=1 -p SOURCE_IMAGE="172.30.1.1:5000/myproject/zookeeper" -p ZOO_VERSION="3.4.14"
 ```
 > NOTE: select zk.yaml or zk-persistence.yaml, and set parameter values
 

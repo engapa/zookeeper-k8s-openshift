@@ -33,16 +33,10 @@ RUN set -ex \
 # Add custom scripts and configure user
 ADD zk_env.sh zk_setup.sh zk_status.sh $ZOO_HOME/bin/
 
-RUN set -ex; \
-    addgroup --gid 10001 $ZOO_GROUP && \
-    adduser -h $ZOO_HOME -g "zookeeper" -s /sbin/nologin -D -G $ZOO_GROUP --uid 10001 $ZOO_USER && \
-    chown -R $ZOO_USER:$ZOO_GROUP $ZOO_HOME && \
-    chmod a+x $ZOO_HOME/bin/* && \
+RUN chmod a+x $ZOO_HOME/bin/* && \
     chmod -R a+w $ZOO_HOME && \
-    ln -s $ZOO_HOME/bin/zk_*.sh /usr/bin && \
-    echo "${ZOO_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+    ln -s $ZOO_HOME/bin/zk_*.sh /usr/bin
 
-USER $ZOO_USER
 WORKDIR $ZOO_HOME/bin/
 
 EXPOSE ${ZK_clientPort:-2181} ${ZOO_SERVER_PORT:-2888} ${ZOO_ELECTION_PORT:-3888}
