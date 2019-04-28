@@ -9,7 +9,7 @@ It isn't necessary to clone this repo, you can use directly resource URLs.
 ## Requirements
 
 - [oc](https://github.com/openshift/origin/releases) (v3.11)
-- [minihift](https://github.com/minishift/minishift) (v1.33.0)
+- [minishift](https://github.com/minishift/minishift) (v1.33.0)
 
 ### DEV environment
 
@@ -28,9 +28,9 @@ openshift v3.11.0+57f8760-31
 ```
 >NOTE: minishift has configured the oc client correctly to connect to local Openshift cluster properly.
 
-With `oc` tools is possible get up a cluster as well, take a look at: https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md
+With `oc` command client is possible get up a cluster as well, take a look at: https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md
 
-Supposing we have our openshift cluster ready:
+Check that our cluster is ready:
 
 ```bash
 $ oc version
@@ -42,25 +42,12 @@ Server https://192.168.2.32:8443
 kubernetes v1.11.0+d4cacc0
 ```
 
-Login with admin user and provide a password:
+You may use the Openshift dashboard (`minishift console`) if you prefer to do those steps through the web interface,
+in other case use `oc` command client:
 
 ```bash
-$ oc login -u admin -p xxxxx
+oc login -u system:admin
 ```
-
-Create a new project:
-
-```bash
-$ oc new-project test 
-```
-
-You may use the Openshift dashboard (`minishift console`) if you prefer to do those steps through the web interface.
-
-> TRICK: Login as cluster admin: `oc login -u system:admin -n default`,
- change permissions of default scc `oc edit scc restricted` and change runAsUser.type value to RunAsAny.
- 
-
-For local environment we'll use a non persistent deployments (zk.yaml)
 
 ### PROD environment
 
@@ -95,15 +82,7 @@ $ oc start-build zk-builder --commit=master
 
 Or build a local docker image from source directy:
 ```bash
-./main build_local_image
-```
-
-2 - Check that image is ready:
-
-```bash
-$ oc get is -l component=zk [-n project]
-NAME        DOCKER REPO                           TAGS      UPDATED
-zookeeper   172.30.1.1:5000/myproject/zookeeper       3.4.14    1 days ago
+$ ./main build_local_image
 ```
 
 **NOTE**: If you want to use this local/private image from containers on other projects then use the "\<project\>/NAME" value as `SOURCE_IMAGE` parameter value, and use one value of "TAGS" as `ZOO_VERSION` parameter value (e.g: test/zookeeper:3.4.14).
@@ -118,31 +97,26 @@ $ oc new-app zk -p ZOO_REPLICAS=1 -p SOURCE_IMAGE="172.30.1.1:5000/myproject/zoo
 ```
 > NOTE: select zk.yaml or zk-persistence.yaml, and set parameter values
 
-For example, if you deployed a persistence zookeeper with ZOO_REPLICAS=1:
+For example, if you deployed a persistent zookeeper with ZOO_REPLICAS=1:
 
 ```bash
-$ oc get all,pvc,statefulset -l zk-name=zk
-NAME       CLUSTER-IP   EXTERNAL-IP   PORT(S)                      AGE
-svc/zk     None         <none>        2181/TCP,2888/TCP,3888/TCP   11m
+$ oc get all,pvc,pv -l component=zk
+NAME                  READY     STATUS    RESTARTS   AGE
+pod/zk-persistent-0   1/1       Running   0          53s
 
-NAME                DESIRED   CURRENT   AGE
-statefulsets/zk     3         3         11m
+NAME                    TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                      AGE
+service/zk-persistent   ClusterIP   None         <none>        2181/TCP,2888/TCP,3888/TCP   53s
 
-NAME        READY     STATUS    RESTARTS   AGE
-po/zk-0     1/1       Running   0          2m
-po/zk-1     1/1       Running   0          1m
-po/zk-2     1/1       Running   0          46s
+NAME                             DESIRED   CURRENT   AGE
+statefulset.apps/zk-persistent   1         1         53s
 
-NAME                    STATUS    VOLUME                                     CAPACITY   ACCESSMODES   AGE
-pvc/datadir-zk-0        Bound     pvc-a654d055-6dfa-11e7-abe1-42010a840002   1Gi        RWO           11m
-pvc/datadir-zk-1        Bound     pvc-a6601148-6dfa-11e7-abe1-42010a840002   1Gi        RWO           11m
-pvc/datadir-zk-2        Bound     pvc-a667fa41-6dfa-11e7-abe1-42010a840002   1Gi        RWO           11m
-pvc/datalogdir-zk-0     Bound     pvc-a657ff77-6dfa-11e7-abe1-42010a840002   1Gi        RWO           11m
-pvc/datalogdir-zk-1     Bound     pvc-a664407a-6dfa-11e7-abe1-42010a840002   1Gi        RWO           11m
-pvc/datalogdir-zk-2     Bound     pvc-a66b85f7-6dfa-11e7-abe1-42010a840002   1Gi        RWO           11m
+NAME                                               STATUS    VOLUME                         CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+persistentvolumeclaim/datadir-zk-persistent-0      Bound     zk-persistent-datalog-disk-1   1Gi        RWO                           53s
+persistentvolumeclaim/datalogdir-zk-persistent-0   Bound     zk-persistent-data-disk-1      1Gi        RWO                           53s
 
-NAME                DESIRED   CURRENT   AGE
-statefulsets/zk      3         3         11m
+NAME                                            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                                  STORAGECLASS   REASON    AGE
+persistentvolume/zk-persistent-data-disk-1      1Gi        RWO            Retain           Bound     myproject/datalogdir-zk-persistent-0                            54s
+persistentvolume/zk-persistent-datalog-disk-1   1Gi        RWO            Retain           Bound     myproject/datadir-zk-persistent-0                               53s
 ```
 
 ## Clean up
@@ -150,28 +124,12 @@ statefulsets/zk      3         3         11m
 To remove all resources related to the zookeeper cluster deployment launch this command:
 
 ```bash
-$ oc delete all,statefulset[,pvc] -l zk-name=<name> [-n <namespace>|--all-namespaces]
-```
-where '<name>' is the value of param NAME (default value zk). Note that pvc resources are marked as optional in the command,
-it's up to you preserver or not the persistent volumes (by default when a pvc is deleted the persistent volume will be deleted as well).
-Type the namespace option if you are in a different namespace that resources are, and indicate --all-namespaces option if all namespaces should be considered.
-
-It's possible delete all resources created by using the template:
-with cluster created by template name:
-
-```bash
-$ oc delete all,statefulset[,pvc] -l template=zk[-persistent] [-n <namespace>] [--all-namespaces]
+$ oc delete all -l component=zk [-n <namespace>|--all-namespaces]
 ```
 
-Also someone can remove all resources of type zk, belong to all clusters and templates:
+And finally, you want to remove the template as well:
 
 ```bash
-$ oc delete all,statefulset[,pvc] -l component=zk [-n <namespace>] [--all-namespaces]
-```
-
-And finally if you even want to remove the template:
-
-```bash
-$ oc delete template zk-builder [-n <namespace>] [--all-namespaces]
-$ oc delete template zk[-persistent] [-n <namespace>] [--all-namespaces]
+$ oc delete template zk-builder [-n <namespace>|--all-namespaces]
+$ oc delete template zk[-persistent] [-n <namespace>|--all-namespaces]
 ```
