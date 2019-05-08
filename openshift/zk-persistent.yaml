@@ -208,6 +208,7 @@ objects:
           securityContext:
             runAsUser: 10001
             fsGroup: 10001
+            runAsNonRoot: true
           volumeMounts:
           - name: datadir
             mountPath: /opt/zookeeper/data
