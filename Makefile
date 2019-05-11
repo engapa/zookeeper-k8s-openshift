@@ -21,7 +21,7 @@ docker-build: ## Build the docker image
 
 .PHONY: docker-run
 docker-run: ## Create a docker container
-	@docker run -d --name zk $(DOCKER_ORG)/$(DOCKER_IMAGE):$(ZK_VERSION)
+	@docker run -d --rm --name zk $(DOCKER_ORG)/$(DOCKER_IMAGE):$(ZK_VERSION)
 
 .PHONY: docker-test
 docker-test: docker-run ## Test for docker container

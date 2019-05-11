@@ -54,8 +54,8 @@ spec:
 #              }
     spec:
       securityContext:
-        runAsUser: 10001
-        fsGroup: 10001
+        runAsUser: 1001
+        fsGroup: 1001
       containers:
       - name: zk-persistent
         imagePullPolicy: IfNotPresent

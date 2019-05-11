@@ -2,7 +2,20 @@
 
 . $ZOO_HOME/common_functions.sh
 
-mkdir -p $ZOO_CONF_DIR $ZK_dataDir $ZK_dataLogDir
+whoami
+id
+ls -lisah $ZOO_HOME
+
+for dir in $ZOO_CONF_DIR $ZK_dataDir $ZK_dataLogDir;do
+  if [[ ! -d $dir ]]; then
+    echo "Creating directory $dir ..."
+    mkdir -p $dir
+  else
+    # Ensure that we can write on directories (possible persistent volumes)
+    echo "Ensuring permission for directory $dir ..."
+    sudo chown -R $ZOO_USER:$ZOO_GROUP $dir
+  fi
+done
 
 DEBUG=${SETUP_DEBUG:-false}
 LOWER=${SETUP_LOWER:-false}

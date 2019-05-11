@@ -180,5 +180,5 @@ objects:
             initialDelaySeconds: 15
             timeoutSeconds: 5
           securityContext:
-            runAsUser: 10001
-            fsGroup: 10001
+            runAsUser: 1001
+            fsGroup: 1001

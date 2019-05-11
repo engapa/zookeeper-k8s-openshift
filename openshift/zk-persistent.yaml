@@ -206,9 +206,8 @@ objects:
             initialDelaySeconds: 20
             timeoutSeconds: 10
           securityContext:
-            runAsUser: 10001
-            fsGroup: 10001
-            runAsNonRoot: true
+            runAsUser: 1001
+            fsGroup: 1001
           volumeMounts:
           - name: datadir
             mountPath: /opt/zookeeper/data
