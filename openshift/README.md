@@ -56,22 +56,22 @@ To connect to external cluster we need to know the URL to login with your creden
 For production environments we'll use zookeeper deployments with persistence (zk-persistent.yaml).
 
 We recommend you to use **zk-persistent.yaml**.
-This means that although pods are destroyed all data are safe under persistent volumes, and when pod are recreated the volumes will be attached again.
+This means that although pods are destroyed all data are safe under persistent volumes, and when pods are recreated the volumes will be attached again.
 
-The statefulset object has an "antiaffinity" pod scheduler policy so pods will be allocated on separated nodes.
+The statefulset object has an "antiaffinity" pod scheduler policy so pods will be allocated on separated nodes (uncomment those lines at `zk-persistent.yaml` file to activate it).
 It's required the same number of nodes that the value of parameter `ZOO_REPLICAS`.
 
 ## Building the image
 
 This is a recommended step, although you can always use the [public images at dockerhub](https://hub.docker.com/r/engapa/zookeeper) which are automatically uploaded with CI of this project.
 
-To build and save a docker image of zookeeper in your private Openshift registry just follow these instructions:
+To build local docker images of zookeeper in your private Openshift registry just follow these instructions:
 
 1 - Create an image builder and build the container image locally
 
 ```bash
 $ oc create -f buildconfig.yaml
-$ oc new-app zk-builder -p GITHUB_REF="v3.4.14" -p IMAGE_STREAM_VERSION="3.4.14"
+$ oc new-app zk-builder -p GITHUB_REF="v3.4.14" -p IMAGE_STREAM_VERSION="v3.4.14"
 ```
 
 If you want to get an image from another git commit:
@@ -80,16 +80,16 @@ If you want to get an image from another git commit:
 $ oc start-build zk-builder --commit=master
 ```
 
-Or build a local docker image from source directy:
+Or build a local docker image from source directly:
 ```bash
 $ ./main build_local_image
 ```
 
 **NOTE**: If you want to use this local/private image from containers on other projects then use the "\<project\>/NAME" value as `SOURCE_IMAGE` parameter value, and use one value of "TAGS" as `ZOO_VERSION` parameter value (e.g: test/zookeeper:3.4.14).
 
-## Deploy zookeeper cluster
+## Deploying zookeeper cluster
 
-Just type next command to create a zookeeper cluster by using statefulset resources on Openshift:
+Just type next command to create a zookeeper cluster by using a statefulset on Openshift:
 
 ```bash
 $ oc create -f zk[-persistent].yaml
@@ -119,7 +119,17 @@ persistentvolume/zk-persistent-data-disk-1      1Gi        RWO            Retain
 persistentvolume/zk-persistent-datalog-disk-1   1Gi        RWO            Retain           Bound     myproject/datadir-zk-persistent-0                               53s
 ```
 
-## Clean up
+You may use the `main.sh` script on this directory:
+```bash
+$ ./main test <replicas-number>
+```
+or 
+```bash
+$ ./main test-persistent <replicas-number>
+```
+> NOTE: Where <replicas-number> is the number or replicas you want, by default 1.
+
+## Cleaning up
 
 To remove all resources related to the zookeeper cluster deployment launch this command:
 
@@ -132,4 +142,9 @@ And finally, you want to remove the template as well:
 ```bash
 $ oc delete template zk-builder [-n <namespace>|--all-namespaces]
 $ oc delete template zk[-persistent] [-n <namespace>|--all-namespaces]
+```
+
+You may use the `main.sh` script on this directory:
+```bash
+$ ./main clean-resources
 ```
