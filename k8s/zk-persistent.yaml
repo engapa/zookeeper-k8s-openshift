@@ -29,6 +29,7 @@ metadata:
 spec:
   serviceName: "zk-svc"
   replicas: 3
+  podManagementPolicy: "Parallel"
   template:
     metadata:
       labels:

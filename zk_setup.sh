@@ -2,10 +2,6 @@
 
 . $ZOO_HOME/common_functions.sh
 
-whoami
-id
-ls -lisah $ZOO_HOME
-
 for dir in $ZOO_CONF_DIR $ZK_dataDir $ZK_dataLogDir;do
   if [[ ! -d $dir ]]; then
     echo "Creating directory $dir ..."
