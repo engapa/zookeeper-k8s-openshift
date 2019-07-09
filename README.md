@@ -54,7 +54,7 @@ $ docker run -it -d --name zk -e "SETUP_DEBUG=true" -e "LOG4J_zookeeper_root_log
 
 Also you may use `--env-file` option to load these variables from a file.
 
-And, of course, you could provide your own properties files directly through volumes by option `-v` and without using the `zk_setup.sh` script.
+And, of course, you could provide your own properties files directly through volumes by option `-v`, as you know.
 
 ## k8s
 
