@@ -7,7 +7,7 @@ fi
 function download_zoo_release () {
 
   URL_BASE="https://dist.apache.org/repos/dist/release/zookeeper"
-  URL_DIST="${URL_BASE}/zookeeper-${ZOO_VERSION}/zookeeper-${ZOO_VERSION}.tar.gz"
+  URL_DIST="${URL_BASE}/zookeeper-${ZOO_VERSION}/apache-zookeeper-${ZOO_VERSION}-bin.tar.gz"
 
   wget -q -O /tmp/zookeeper.tar.gz "${URL_DIST}"
   wget -q -O /tmp/zookeeper.tar.gz.asc "${URL_DIST}.asc"
@@ -20,15 +20,9 @@ function download_zoo_release () {
 
   rm -rf /tmp/zookeeper.tar.{gz, gz.asc} \
          /tmp/KEYS
-  rm -rf $ZOO_HOME/{CHANGES.txt,NOTICE.txt,LICENSE.txt,README*} \
-         $ZOO_HOME/build* \
-         $ZOO_HOME/ivy* \
-         $ZOO_HOME/recipes \
-         $ZOO_HOME/src \
-         $ZOO_HOME/dist-maven \
+  rm -rf $ZOO_HOME/{NOTICE.txt,LICENSE.txt,README*} \
          $ZOO_HOME/docs \
-         $ZOO_HOME/bin/{*.cmd,README.txt} \
-         $ZOO_HOME/*.{asc,md5,sha1}
+         $ZOO_HOME/bin/{README*,*.cmd}
 }
 
 function download_utils() {
