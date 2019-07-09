@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: zk-svc
+  name: zk-persistent
   labels:
     zk-name: zk-persistent
     component: zk
@@ -19,7 +19,7 @@ spec:
   selector:
     zk-name: zk-persistent
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: zk-persistent
@@ -27,7 +27,11 @@ metadata:
     zk-name: zk-persistent
     component: zk
 spec:
-  serviceName: "zk-svc"
+  serviceName: zk-persistent
+  selector:
+    matchLabels:
+      zk-name: zk-persistent
+      component: zk
   replicas: 3
   podManagementPolicy: "Parallel"
   template:
@@ -60,7 +64,7 @@ spec:
       containers:
       - name: zk-persistent
         imagePullPolicy: IfNotPresent
-        image: engapa/zookeeper:3.4.14
+        image: engapa/zookeeper:3.5.5
         resources:
           requests:
             memory: 512M
@@ -78,18 +82,20 @@ spec:
         env:
         - name: ZOO_REPLICAS
           value: "3"
-        - name: JAVA_ZK_JVMFLAG
+        - name: JAVA_ZK_JVMFLAGS
           value: "\"-Xmx512M -Xms512M\""
         readinessProbe:
           exec:
             command:
-            - zk_status.sh
+            - zkServer.sh
+            - status
           initialDelaySeconds: 20
           timeoutSeconds: 10
         livenessProbe:
           exec:
             command:
-            - zk_status.sh
+            - zkServer.sh
+            - status
           initialDelaySeconds: 20
           timeoutSeconds: 10
         volumeMounts:
@@ -112,3 +118,4 @@ spec:
       resources:
         requests:
           storage: 1Gi
+      selector:
