@@ -10,10 +10,9 @@ This project aims to provide zookeeper docker images and prepare them to be depl
 
 These scripts are used to build/run the docker image/container:
 
-* **zk_env.sh**: Export needed env variable for other scripts.
-* **zk_download.sh**: is used to download the suitable release of zookeeper (version `ZOO_VERSION`).
-* **zk_setup.sh**: Configure zookeeper dynamically, based on [utils-docker project](https://github.com/engapa/utils-docker).
-* **zk_status.sh**: health checks.
+* **zookeeper-env.sh**: Export needed env variable for other scripts.
+* **zookeeper-download.sh**: is used to download the suitable release of zookeeper (version `ZOO_VERSION`).
+* **zkBootstrap.sh**: Initializes zookeeper dynamically, based on [utils-docker project](https://github.com/engapa/utils-docker).
 
 ## Build and push the docker image
 
@@ -21,12 +20,10 @@ Set env variables DOCKER_ORG (defaults to engapa), DOCKER_IMAGE (defaults to zoo
 to tag docker image as you wish and then build, test and push:
 
 ```bash
-$ make docker-build docker-test docker-push
+$ make clean docker-build docker-test docker-push
 ```
 
 ## Run a container
-
-By default the container entrypoint is `./zk_env.sh` and the command directive is `zk_setup.sh && ./zkServer.sh start-foreground`.
 
 Let's run a zookeeper container with default environment variables:
 
