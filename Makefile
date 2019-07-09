@@ -3,7 +3,7 @@
 DOCKER_ORG           ?= engapa
 DOCKER_IMAGE         ?= zookeeper
 
-ZK_VERSION           ?= 3.4.14
+ZK_VERSION           ?= 3.5.5
 
 .PHONY: help
 help: ## Show this help
@@ -26,8 +26,9 @@ docker-run: ## Create a docker container
 .PHONY: docker-test
 docker-test: docker-run ## Test for docker container
 	@until [ "$$(docker ps --filter 'name=zk' --filter 'health=healthy' --format '{{.Names}}')" == "zk" ]; do \
+	   sleep 10; \
+	   (docker ps --filter 'name=zk' --format '{{.Names}}' | grep zk > /dev/null 2>&1) || exit $$?; \
 	   echo "Checking healthy status of zookeeper ..."; \
-	   sleep 20; \
 	done
 
 .PHONY: docker-push
