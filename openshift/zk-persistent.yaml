@@ -20,7 +20,7 @@ parameters:
   required: true
 - name: ZOO_VERSION
   description: Version
-  value: "3.4.14"
+  value: "3.5.5"
   required: true
 - name: ZOO_REPLICAS
   description: Number of nodes
@@ -70,7 +70,7 @@ parameters:
   description: Purge task interval in hours. Set to 0 to disable auto purge feature
   value: "1"
   required: true
-- name: ZOO_HEAP_SIZE
+- name: ZOO_MEMORY
   description: JVM heap size
   value: "-Xmx512M -Xms512M"
   required: true
@@ -112,7 +112,7 @@ objects:
     clusterIP: None
     selector:
       zk-name: ${NAME}
-- apiVersion: apps/v1beta1
+- apiVersion: apps/v1
   kind: StatefulSet
   metadata:
     name: ${NAME}
@@ -122,6 +122,10 @@ objects:
   spec:
     podManagementPolicy: "Parallel"
     serviceName: ${NAME}
+    selector:
+      matchLabels:
+        zk-name:  ${NAME}
+        component: zk
     replicas: ${ZOO_REPLICAS}
     template:
       metadata:
@@ -191,18 +195,20 @@ objects:
             value: ${ZOO_SERVER_PORT}
           - name : ZOO_ELECTION_PORT
             value: ${ZOO_ELECTION_PORT}
-          - name : JAVA_ZK_JVMFLAG
-            value: "\"${ZOO_HEAP_SIZE}\""
+          - name : JAVA_ZK_JVMFLAGS
+            value: "\"${ZOO_MEMORY}\""
           readinessProbe:
             exec:
               command:
-              - zk_status.sh
+              - zkServer.sh
+              - status
             initialDelaySeconds: 20
             timeoutSeconds: 10
           livenessProbe:
             exec:
               command:
-              - zk_status.sh
+              - zkServer.sh
+              - status
             initialDelaySeconds: 20
             timeoutSeconds: 10
           securityContext:
