@@ -104,7 +104,8 @@ objects:
     clusterIP: None
     selector:
       zk-name: ${NAME}
-- apiVersion: apps/v1beta1
+      component: zk
+- apiVersion: apps/v1
   kind: StatefulSet
   metadata:
     name: ${NAME}
@@ -113,13 +114,17 @@ objects:
       component: zk
   spec:
     podManagementPolicy: "Parallel"
-    serviceName: ${NAME}
+    serviceName:
+    selector:
+      matchLabels:
+        zk-name: ${NAME}
+        component: zk
     replicas: ${ZOO_REPLICAS}
     template:
       metadata:
         labels:
           zk-name: ${NAME}
-          template: zk-persistent
+          template: zk
           component: zk
       spec:
         containers:
