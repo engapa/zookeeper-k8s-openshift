@@ -29,9 +29,10 @@ metadata:
     component: zk
 spec:
   serviceName: zk-persistent
-  labels:
-    zk-name: zk-persistent
-    component: zk
+  selector:
+    matchLabels:
+      zk-name: zk-persistent
+      component: zk
   replicas: 3
   template:
     metadata:
