@@ -82,19 +82,10 @@ workflows:
   version: 2
   build:
     jobs:
-    - docker:
-        filters:
-          branches:
-            only: master
+    - docker
     - k8s:
         requires:
         - docker
-        filters:
-          branches:
-            only: master
     - openshift:
         requires:
         - docker
-        filters:
-          branches:
-            only: master
