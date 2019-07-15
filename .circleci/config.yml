@@ -77,15 +77,58 @@ jobs:
       - run:
           name: delete local openshift cluster
           command: make oc-cluster-clean
+  gh-tag-release:
+    docker:
+      - image: cibuilds/github:0.10
+    steps:
+      - attach_workspace:
+          at: ./artifacts
+      - run:
+          name: Install essentials
+          command: |
+            apk add --no-cache --virtual .build-deps make gcc
+      - run:
+          name: Create a new tag
+          command: |
+            cd ./artifacts
+            VERSION=v$(make version)
+            git push origin :${VERSION} > /dev/null 2>&1
+            git tag ${VERSION}
+            git push --tags
+      - run:
+          name: Create a tag release on github
+          command: |
+            VERSION=$(make version)
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "Zookeeper version ${VERSION}" -delete ${VERSION} ./artifacts/k8s/*.yaml
 
 workflows:
   version: 2
   build:
     jobs:
-    - docker
+    - docker:
+        filters:
+          branches:
+            only:
+              - /^\d+\.\d+$/
     - k8s:
         requires:
-        - docker
+          - docker
+        filters:
+          branches:
+            only:
+              - /^\d+\.\d+$/
     - openshift:
         requires:
-        - docker
+          - docker
+        filters:
+          branches:
+            only:
+              - /^\d+\.\d+$/
+    - gh-tag-release:
+        requires:
+          - k8s
+          - openshift
+        filters:
+          branches:
+            only:
+              - /^\d+\.\d+$/
