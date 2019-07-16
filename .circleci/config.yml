@@ -3,7 +3,6 @@ jobs:
   docker:
     docker:
     - image: docker
-    working_directory: ~/repo
     steps:
     - setup_remote_docker:
         docker_layer_caching: true
@@ -17,20 +16,13 @@ jobs:
         command: |
           apk add --no-cache --virtual .build-deps make gcc
     - run:
-        name: build docker image
+        name: build, test and push images
         command: |
-          make docker-build
-    - run:
-        name: test of docker image
-        command: |
-          make docker-test
-    - run:
-        name: publish docker image
-        command: |
-          make docker-push
           if [ "$CIRCLE_BRANCH" == "master" ]; then
               docker build -t ${DOCKER_USERNAME}/zookeeper:latest .;
               docker push ${DOCKER_USERNAME}/zookeeper:latest;
+          else
+              make docker-build docker-test docker-push;
           fi
   k8s:
     machine:
@@ -111,6 +103,7 @@ workflows:
           branches:
             only:
               - /^\d+\.\d+$/
+              - master
     - k8s:
         requires:
           - docker
