@@ -3,6 +3,7 @@ jobs:
   docker:
     docker:
     - image: docker
+    working_directory: ~/repo
     steps:
     - setup_remote_docker:
         docker_layer_caching: true
@@ -80,9 +81,10 @@ jobs:
   gh-tag-release:
     docker:
       - image: cibuilds/github:0.10
+    working_directory: ~/repo
     steps:
       - attach_workspace:
-          at: ./artifacts
+            at: /root
       - run:
           name: Install essentials
           command: |
@@ -90,7 +92,6 @@ jobs:
       - run:
           name: Create a new tag
           command: |
-            cd ./artifacts
             VERSION=v$(make version)
             git push origin :${VERSION} > /dev/null 2>&1
             git tag ${VERSION}
@@ -99,7 +100,7 @@ jobs:
           name: Create a tag release on github
           command: |
             VERSION=$(make version)
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "Zookeeper version ${VERSION}" -delete ${VERSION} ./artifacts/k8s/*.yaml
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "Zookeeper version ${VERSION}" -delete ${VERSION} ./k8s/*.yaml
 
 workflows:
   version: 2
