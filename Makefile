@@ -86,4 +86,8 @@ oc-cluster-test-persistent: ## Launch tests on our local openshift cluster with 
 oc-cluster-clean: ## Remove openshift cluster
 	@openshift/main.sh oc-cluster-clean
 
+.PHONY: version
+version: ## Get version
+	@echo $(ZK_VERSION)
+
 ## TODO: helm, ksonnet for deploy on kubernetes
