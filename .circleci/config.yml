@@ -100,7 +100,7 @@ jobs:
           name: Create a tag release on github
           command: |
             VERSION=v$(make version)
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "Zookeeper version ${VERSION}" -delete ${VERSION} ./k8s/*.yaml
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "Zookeeper version ${VERSION}" -delete ${VERSION} ./k8s
 
 workflows:
   version: 2
