@@ -86,13 +86,15 @@ jobs:
       - run:
           name: Install essentials
           command: |
-            apk add --no-cache --virtual .build-deps make gcc
+            apk add --no-cache --virtual .build-deps make gcc curl
       - run:
           name: Create a new tag
           command: |
             VERSION=v$(make version)
-            git push origin :${VERSION} > /dev/null 2>&1
+            git tag -d ${VERSION} > /dev/null 2>&1
             git tag ${VERSION}
+            git remote set-url origin https://${CIRCLE_PROJECT_USERNAME}:${GITHUB_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}
+            git push origin :${VERSION} > /dev/null 2>&1
             git push --tags
       - run:
           name: Create a tag release on github
