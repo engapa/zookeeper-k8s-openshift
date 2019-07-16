@@ -72,7 +72,7 @@ jobs:
           command: make oc-cluster-clean
   gh-tag-release:
     docker:
-      - image: cibuilds/github:0.10
+      - image: cibuilds/github:0.12.2
     steps:
       - checkout
       - run:
