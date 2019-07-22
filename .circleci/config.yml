@@ -83,8 +83,7 @@ jobs:
           name: Create a new tag
           command: |
             VERSION=v$(make version)
-            git tag -d ${VERSION} > /dev/null 2>&1
-            git tag ${VERSION}
+            git tag -f ${VERSION}
             git remote set-url origin https://${CIRCLE_PROJECT_USERNAME}:${GITHUB_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}
             git push origin :${VERSION} > /dev/null 2>&1
             git push --tags
