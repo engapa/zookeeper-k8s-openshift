@@ -93,7 +93,7 @@ Just type next command to create a zookeeper cluster by using a statefulset on O
 
 ```bash
 $ oc create -f zk[-persistent].yaml
-$ oc new-app zk -p ZOO_REPLICAS=1 -p SOURCE_IMAGE="172.30.1.1:5000/myproject/zookeeper" -p ZOO_VERSION=""3.5.6"
+$ oc new-app zk -p ZOO_REPLICAS=1 -p SOURCE_IMAGE="172.30.1.1:5000/myproject/zookeeper" -p ZOO_VERSION="3.5.6"
 ```
 > NOTE: select zk.yaml or zk-persistence.yaml, and set parameter values
 
