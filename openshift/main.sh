@@ -2,7 +2,7 @@
 
 set -e
 
-ZK_VERSION=${ZK_VERSION:-"3.5.5"}
+ZK_VERSION=${ZK_VERSION:-""3.5.6"}
 ZK_IMAGE="engapa/zookeeper:${ZK_VERSION}"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
