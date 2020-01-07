@@ -1,7 +1,6 @@
 # Zookeeper Docker Image
 [![Build status](https://circleci.com/gh/engapa/zookeeper-k8s-openshift/tree/master.svg?style=svg "Build status")](https://circleci.com/gh/engapa/zookeeper-k8s-openshift/tree/master)
 [![Docker Pulls](https://img.shields.io/docker/pulls/engapa/zookeeper.svg)](https://hub.docker.com/r/engapa/zookeeper/)
-[![Docker Layering](https://images.microbadger.com/badges/image/engapa/zookeeper.svg)](https://microbadger.com/images/engapa/zookeeper)
 [![Docker image version](https://images.microbadger.com/badges/version/engapa/zookeeper.svg)](https://microbadger.com/images/engapa/zookeeper)
 ![OSS](https://badges.frapsoft.com/os/v1/open-source.svg?v=103 "We love OpenSource")
 
