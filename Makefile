@@ -3,7 +3,7 @@
 DOCKER_ORG           ?= engapa
 DOCKER_IMAGE         ?= zookeeper
 
-ZK_VERSION           ?= 3.5.5
+ZK_VERSION           ?= 3.5.7
 
 .PHONY: help
 help: ## Show this help
