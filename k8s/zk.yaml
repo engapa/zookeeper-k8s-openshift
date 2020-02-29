@@ -46,7 +46,7 @@ spec:
       containers:
       - name: zk
         imagePullPolicy: IfNotPresent
-        image: engapa/zookeeper:"3.5.6
+        image: engapa/zookeeper:3.5.7
         resources:
           requests:
             memory: 512M
