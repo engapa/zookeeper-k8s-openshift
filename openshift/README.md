@@ -35,11 +35,11 @@ Check that our cluster is ready:
 ```bash
 $ oc version
 oc v3.11.0+0cbc58b
-kubernetes v1.11.0+d4cacc0
+kubernetes v1.17.0+d4cacc0
 features: Basic-Auth
 
 Server https://192.168.2.32:8443
-kubernetes v1.11.0+d4cacc0
+kubernetes v1.17.0+d4cacc0
 ```
 
 You may use the Openshift dashboard (`minishift console`) if you prefer to do those steps through the web interface,
@@ -71,7 +71,7 @@ To build local docker images of zookeeper in your private Openshift registry jus
 
 ```bash
 $ oc create -f buildconfig.yaml
-$ oc new-app zk-builder -p GITHUB_REF="v"3.5.7" -p IMAGE_STREAM_VERSION="v"3.5.7"
+$ oc new-app zk-builder -p GITHUB_REF="v3.5.7" -p IMAGE_STREAM_VERSION="v"3.5.7"
 ```
 
 If you want to get an image from another git commit:
