@@ -9,7 +9,7 @@ It isn't necessary to clone this repo, you can use directly resource URLs.
 ## Requirements
 
 - [oc](https://github.com/openshift/origin/releases) (v3.11)
-- [minishift](https://github.com/minishift/minishift) (v1.33.0)
+- [minishift](https://github.com/minishift/minishift) (v1.34.2)
 
 ### DEV environment
 
@@ -35,11 +35,11 @@ Check that our cluster is ready:
 ```bash
 $ oc version
 oc v3.11.0+0cbc58b
-kubernetes v1.11.0+d4cacc0
+kubernetes v1.17.0+d4cacc0
 features: Basic-Auth
 
 Server https://192.168.2.32:8443
-kubernetes v1.11.0+d4cacc0
+kubernetes v1.17.0+d4cacc0
 ```
 
 You may use the Openshift dashboard (`minishift console`) if you prefer to do those steps through the web interface,
@@ -93,7 +93,7 @@ Just type next command to create a zookeeper cluster by using a statefulset on O
 
 ```bash
 $ oc create -f zk[-persistent].yaml
-$ oc new-app zk -p ZOO_REPLICAS=1 -p SOURCE_IMAGE="172.30.1.1:5000/myproject/zookeeper" -p ZOO_VERSION="3.5.5"
+$ oc new-app zk -p ZOO_REPLICAS=1 -p SOURCE_IMAGE="172.30.1.1:5000/myproject/zookeeper" -p ZOO_VERSION="3.5.7"
 ```
 > NOTE: select zk.yaml or zk-persistence.yaml, and set parameter values
 
