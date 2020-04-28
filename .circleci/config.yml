@@ -25,9 +25,12 @@ jobs:
           fi
   k8s:
     machine:
-      image: circleci/classic:201808-01
+      image: ubuntu-1604:201903-01
     steps:
       - checkout
+      - run:
+          name: update pkgs
+          command: sudo apt-get update && sudo apt-get install -f -y conntrack
       - run:
           name: install minikube and kubectl
           command: make minikube-install
@@ -48,7 +51,7 @@ jobs:
           command: make minikube-delete
   openshift:
     machine:
-      image: circleci/classic:201808-01
+      image: ubuntu-1604:201903-01
     steps:
       - checkout
       - run:
