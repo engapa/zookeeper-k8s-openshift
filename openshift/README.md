@@ -9,7 +9,7 @@ It isn't necessary to clone this repo, you can use directly resource URLs.
 ## Requirements
 
 - [oc](https://github.com/openshift/origin/releases) (v3.11)
-- [minishift](https://github.com/minishift/minishift) (v1.34.2)
+- [minishift](https://github.com/minishift/minishift) (v1.33.0)
 
 ### DEV environment
 
@@ -71,7 +71,7 @@ To build local docker images of zookeeper in your private Openshift registry jus
 
 ```bash
 $ oc create -f buildconfig.yaml
-$ oc new-app zk-builder -p GITHUB_REF="v3.5.5" -p IMAGE_STREAM_VERSION="v3.5.5"
+$ oc new-app zk-builder -p GITHUB_REF="v3.6.1" -p IMAGE_STREAM_VERSION="v3.6.1"
 ```
 
 If you want to get an image from another git commit:
@@ -85,7 +85,7 @@ Or build a local docker image from source directly:
 $ ./main build_local_image
 ```
 
-**NOTE**: If you want to use this local/private image from containers on other projects then use the "\<project\>/NAME" value as `SOURCE_IMAGE` parameter value, and use one value of "TAGS" as `ZOO_VERSION` parameter value (e.g: test/zookeeper:3.5.5).
+**NOTE**: If you want to use this local/private image from containers on other projects then use the "\<project\>/NAME" value as `SOURCE_IMAGE` parameter value, and use one value of "TAGS" as `ZOO_VERSION` parameter value (e.g: test/zookeeper:3.6.1).
 
 ## Deploying zookeeper cluster
 
@@ -93,7 +93,7 @@ Just type next command to create a zookeeper cluster by using a statefulset on O
 
 ```bash
 $ oc create -f zk[-persistent].yaml
-$ oc new-app zk -p ZOO_REPLICAS=1 -p SOURCE_IMAGE="172.30.1.1:5000/myproject/zookeeper" -p ZOO_VERSION="3.5.7"
+$ oc new-app zk -p ZOO_REPLICAS=1 -p SOURCE_IMAGE="172.30.1.1:5000/myproject/zookeeper" -p ZOO_VERSION="3.6.1"
 ```
 > NOTE: select zk.yaml or zk-persistence.yaml, and set parameter values
 

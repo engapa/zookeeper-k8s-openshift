@@ -3,7 +3,7 @@
 DOCKER_ORG           ?= engapa
 DOCKER_IMAGE         ?= zookeeper
 
-ZK_VERSION           ?= 3.5.5
+ZK_VERSION           ?= 3.6.1
 
 .PHONY: help
 help: ## Show this help
@@ -85,5 +85,9 @@ oc-cluster-test-persistent: ## Launch tests on our local openshift cluster with 
 .PHONY: oc-cluster-clean
 oc-cluster-clean: ## Remove openshift cluster
 	@openshift/main.sh oc-cluster-clean
+
+.PHONY: version
+version: ## Get version
+	@echo $(ZK_VERSION)
 
 ## TODO: helm, ksonnet for deploy on kubernetes

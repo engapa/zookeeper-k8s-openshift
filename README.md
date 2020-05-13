@@ -1,12 +1,10 @@
 # Zookeeper Docker Image
 [![Build status](https://circleci.com/gh/engapa/zookeeper-k8s-openshift/tree/master.svg?style=svg "Build status")](https://circleci.com/gh/engapa/zookeeper-k8s-openshift/tree/master)
-[![License status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fengapa%2Fzookeeper-k8s-openshift.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fengapa%2Fzookeeper-k8s-openshift?ref=badge_shield)
 [![Docker Pulls](https://img.shields.io/docker/pulls/engapa/zookeeper.svg)](https://hub.docker.com/r/engapa/zookeeper/)
-[![Docker Layering](https://images.microbadger.com/badges/image/engapa/zookeeper.svg)](https://microbadger.com/images/engapa/zookeeper)
 [![Docker image version](https://images.microbadger.com/badges/version/engapa/zookeeper.svg)](https://microbadger.com/images/engapa/zookeeper)
 ![OSS](https://badges.frapsoft.com/os/v1/open-source.svg?v=103 "We love OpenSource")
 
-This project aims to provide zookeeper docker images and prepare them to be deployed as 'statefulsets' on kubernetes.
+This project aims to provide zookeeper docker images and prepare them to be deployed as 'statefulsets' on kubernetes (openshift).
 
 These scripts are used to build/run the docker image/container:
 
@@ -16,7 +14,7 @@ These scripts are used to build/run the docker image/container:
 
 ## Build and push the docker image
 
-Set env variables DOCKER_ORG (defaults to engapa), DOCKER_IMAGE (defaults to zookeeper) and ZOO_VERSION (the real zookeeper version that will be downloaded into the docker image)
+Set env variables DOCKER_ORG (defaults to `engapa`), DOCKER_IMAGE (defaults to `zookeeper`) and ZOO_VERSION (the real zookeeper version that will be downloaded into the docker image)
 to tag docker image as you wish and then build, test and push:
 
 ```bash
@@ -65,10 +63,6 @@ Thanks to kubernetes team for the [contrib](https://github.com/kubernetes/contri
 ## Openshift
 
 In [openshift directory](openshift) you can find some Openshift templates.
-
-## License
-
-[![License status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fengapa%2Fzookeeper-k8s-openshift.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fengapas%2Fzookeeper-k8s-openshift?ref=badge_large)
 
 ## Author
 
