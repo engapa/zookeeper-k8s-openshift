@@ -2,7 +2,7 @@
 
 set -e
 
-MINIKUBE_VERSION=${MINIKUBE_VERSION:-"v1.9.2"}
+MINIKUBE_VERSION=${MINIKUBE_VERSION:-"v1.10.1"}
 KUBE_VERSION=${KUBE_VERSION:-"v1.18.2"}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
