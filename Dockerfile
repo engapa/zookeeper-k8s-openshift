@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:11-jre-slim-buster
 
 MAINTAINER Enrique Garcia <engapa@gmail.com>
 
@@ -16,31 +16,29 @@ ENV ZOO_HOME=$ZOO_HOME \
     PATH=$ZOO_HOME/bin:${PATH}
 
 # Required packages
-RUN apk add --update --no-cache \
-      bash tar wget curl gnupg openssl ca-certificates sudo
+RUN apt update && \
+    apt install -y tar gnupg openssl ca-certificates wget netcat sudo
+
+# User and group
+RUN groupadd -g 1001 $ZOO_GROUP \
+    && useradd -d $ZOO_HOME -g $ZOO_GROUP -u 1001 -G sudo -m $ZOO_USER\
+    && echo "${ZOO_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Download zookeeper distribution under ZOO_HOME directory
 ADD zookeeper-download.sh /tmp/
 
-RUN mkdir -p $ZOO_HOME && \
-    chmod a+x /tmp/zookeeper-download.sh
-
-RUN /tmp/zookeeper-download.sh
-
-RUN rm -rf /tmp/zookeeper-download.sh && \
-    apk del wget gnupg
+RUN chmod a+x /tmp/zookeeper-download.sh \
+    && /tmp/zookeeper-download.sh
 
 # Add custom files.
 ADD zkBootstrap.sh $ZOO_HOME/bin
 ADD zookeeper-env.sh $ZOOCFGDIR
 
-RUN addgroup -S -g 1001 $ZOO_GROUP && \
-    adduser -h $ZOO_HOME -g "zookeeper" -u 1001 -D -S -G $ZOO_GROUP $ZOO_USER&& \
-    chown -R $ZOO_USER:$ZOO_GROUP $ZOO_HOME && \
+# Permissions
+RUN chown -R $ZOO_USER:$ZOO_GROUP $ZOO_HOME && \
     chmod a+x $ZOO_HOME/bin/* && \
     chmod -R a+w $ZOO_HOME && \
-    ln -s $ZOO_HOME/bin/zk_*.sh /usr/bin && \
-    echo "${ZOO_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+    ln -s $ZOO_HOME/bin/zk_*.sh /usr/bin
 
 USER $ZOO_USER
 
