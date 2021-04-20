@@ -20,7 +20,7 @@ parameters:
   required: true
 - name: ZOO_VERSION
   description: Version
-  value: "3.6.2"
+  value: "3.7.0"
   required: true
 - name: ZOO_REPLICAS
   description: Number of nodes

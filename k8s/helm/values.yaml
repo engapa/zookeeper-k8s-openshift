@@ -1,7 +1,7 @@
 Name: "zk"
 Replicas: 1
 Image: "engapa/zookeeper"
-ImageTag: "3.6.2"
+ImageTag: "3.7.0"
 ImagePullPolicy: "IfNotPresent"
 Cpu: "1"
 Memory: "512M"

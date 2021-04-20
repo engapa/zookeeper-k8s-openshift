@@ -5,7 +5,7 @@ MAINTAINER Enrique Garcia <engapa@gmail.com>
 ARG ZOO_HOME=/opt/zookeeper
 ARG ZOO_USER=zookeeper
 ARG ZOO_GROUP=zookeeper
-ARG ZOO_VERSION="3.6.2"
+ARG ZOO_VERSION="3.7.0"
 
 ENV ZOO_HOME=$ZOO_HOME \
     ZOO_VERSION=$ZOO_VERSION \
