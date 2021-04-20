@@ -108,6 +108,7 @@ spec:
       name: datadir
     spec:
       accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "standard"
       resources:
         requests:
           storage: 1Gi
@@ -115,7 +116,7 @@ spec:
       name: datalogdir
     spec:
       accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "standard"
       resources:
         requests:
           storage: 1Gi
-      selector:
