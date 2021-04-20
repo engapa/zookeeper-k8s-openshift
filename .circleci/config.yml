@@ -25,7 +25,7 @@ jobs:
           fi
   k8s:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202101-01
     steps:
       - checkout
       - run:
@@ -51,7 +51,7 @@ jobs:
           command: make minikube-delete
   openshift:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202101-01
     steps:
       - checkout
       - run:
