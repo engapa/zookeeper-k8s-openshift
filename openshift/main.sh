@@ -22,8 +22,8 @@ function oc-install()
 function oc-cluster-run()
 {
 
-  # Add internal insecure registry
-  sudo sed -i 's#^ExecStart=.*#ExecStart=/usr/bin/dockerd --insecure-registry='172.30.0.0/16' -H fd://#' /lib/systemd/system/docker.service
+  # Add internal insecure registry, CAUTION: this command depends on Linux VM and docker version
+  sudo sed -i 's#^ExecStart=.*#ExecStart=/usr/bin/dockerd --insecure-registry '172.30.0.0/16' -H fd://#' /lib/systemd/system/docker.service
   sudo systemctl daemon-reload
   sudo systemctl restart docker
 
